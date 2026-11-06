@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fiche de joueur de JDR</title>
+<style>
+:root{--bg:#f6f3ee;--card:#fff;--ink:#2b2622;--muted:#6f665d;--accent:#8a3b2a;--accent-ink:#fff;--line:#d9d1c6;--soft:#efe7da;--avoid:#a33a3a}
+@media (prefers-color-scheme:dark){:root{--bg:#1c1917;--card:#26211e;--ink:#eee6db;--muted:#a79c8f;--accent:#e08a6f;--accent-ink:#1c1917;--line:#3c3530;--soft:#312a25;--avoid:#c75b5b}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
+.page{max-width:860px;margin:0 auto;padding:24px 16px 56px}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:2rem;margin:0 0 4px;letter-spacing:.2px}
+.sub{color:var(--muted);margin:0 0 20px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+button{font:inherit;padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:16px;break-inside:avoid}
+h2{font-family:Georgia,serif;font-size:1.2rem;margin:0 0 2px;color:var(--accent)}
+.hint{color:var(--muted);font-size:.88rem;margin:0 0 12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:640px){.grid2{grid-template-columns:1fr}}
+label.field{display:block;font-size:.85rem;color:var(--muted)}
+input[type=text],input[type=date],select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-top:3px}
+textarea{min-height:72px;resize:vertical}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--line)}
+.row:first-of-type{border-top:0}
+.lab{flex:1;min-width:0}
+.lab strong{display:block}
+.lab small{color:var(--muted)}
+.scale{display:flex;gap:6px;flex-shrink:0}
+.scale input{position:absolute;opacity:0;width:0;height:0}
+.scale label{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;cursor:pointer;font-size:.9rem;color:var(--muted);background:var(--bg)}
+.scale input:checked + label{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700}
+.scale input:focus-visible + label{outline:2px solid var(--accent);outline-offset:2px}
+.total{margin-top:10px;font-size:.9rem;color:var(--muted)}
+.total b{color:var(--ink)}
+.cursor{padding:10px 0;border-top:1px solid var(--line)}
+.cursor:first-of-type{border-top:0}
+.ctitle{font-weight:600}
+.cdesc{color:var(--muted);font-size:.85rem}
+.cbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:6px}
+.pole{flex:1;font-size:.9rem}
+.pole.r{text-align:right}
+@media (max-width:640px){.cbar{flex-wrap:wrap;justify-content:center}.pole,.pole.r{flex-basis:100%;text-align:center}.cbar .scale{order:2}.pole.l{order:1}.pole.r{order:3}}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips input{position:absolute;opacity:0;width:0;height:0}
+.chips label{padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:var(--bg);cursor:pointer;font-size:.9rem}
+.chips input:checked + label{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chips input:focus-visible + label{outline:2px solid var(--accent);outline-offset:2px}
+h3{font-size:.95rem;margin:12px 0 6px}
+.profile{display:grid;grid-template-columns:200px 1fr;gap:18px;align-items:center}
+@media (max-width:640px){.profile{grid-template-columns:1fr;justify-items:center}}
+.map text{fill:var(--muted);font-size:10px;font-family:system-ui,sans-serif}
+.map .frame{fill:var(--bg);stroke:var(--line)}
+.map .axis{stroke:var(--line)}
+#dot{fill:var(--accent);stroke:var(--card);stroke-width:2}
+#summary{font-size:1rem}
+.q{margin-top:10px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+#universes{break-inside:auto}
+details.guide{border:1px dashed var(--line);border-radius:10px;padding:10px 14px;margin-bottom:14px;background:var(--bg)}
+details.guide summary{cursor:pointer;font-weight:600;color:var(--accent)}
+.qz{margin-top:14px}
+.qz p{margin:0 0 6px;font-weight:600}
+.suggest{margin:14px 0 10px;padding:10px 12px;background:var(--soft);border-radius:8px;font-size:.92rem}
+.suggest p{margin:3px 0}
+.lv{display:inline-block;margin:2px 10px 2px 0;white-space:nowrap}
+.lv b{display:inline-grid;place-items:center;min-width:22px;height:22px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-size:.78rem;margin-right:4px}
+.lv.x b{background:var(--avoid);color:#fff}
+.legend{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:.85rem;color:var(--muted);margin-bottom:4px}
+.legendnote{font-size:.8rem;color:var(--muted);margin:0 0 6px}
+.ugroup h3{margin:18px 0 2px;color:var(--accent)}
+.ugroup .hint{margin:0 0 6px}
+.ugrid{display:grid;grid-template-columns:1fr 1fr;gap:0 28px}
+@media (max-width:760px){.ugrid{grid-template-columns:1fr}}
+.urow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 10px;padding:7px 0;border-top:1px solid var(--line)}
+.urow .lab{flex:1 1 170px}
+.urow .lab strong{font-size:.95rem}
+.urow .lab small{font-size:.8rem}
+.tri{display:flex;gap:3px;flex-shrink:0}
+.tri input{position:absolute;opacity:0;width:0;height:0}
+.tri label{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;cursor:pointer;color:var(--muted);background:var(--bg);font-size:.85rem}
+.tri input:focus-visible + label{outline:2px solid var(--accent);outline-offset:2px}
+.tri input:checked + label{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700}
+.tri input[value=x]:checked + label{background:var(--avoid);border-color:var(--avoid);color:#fff}
+.uprof h4{margin:12px 0 4px;font-size:.95rem;color:var(--accent)}
+.uprof .pl{display:flex;justify-content:space-between;gap:10px;padding:2px 0;border-top:1px solid var(--line);font-size:.92rem}
+.uprof .dots{letter-spacing:2px;color:var(--accent);white-space:nowrap}
+.uprof .none{color:var(--muted);font-size:.9rem}
+a.back{font:inherit;padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);text-decoration:none}
+@media print{
+  :root{--bg:#fff;--card:#fff;--ink:#000;--muted:#444;--accent:#000;--accent-ink:#fff;--line:#999;--soft:#eee;--avoid:#000}
+  body{font-size:11.5px;background:#fff}
+  .page{padding:0;max-width:none}
+  .toolbar{display:none}
+  details.guide,#catalog,.legend{display:none}
+  section{padding:8px 10px;margin-bottom:8px}
+  .scale label{width:24px;height:24px;font-size:.75rem}
+  textarea{min-height:48px;border-color:#999}
+  h1{font-size:1.5rem}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>Fiche de joueur de JDR</h1>
+  <p class="sub">À remplir en séance zéro. Il n'y a pas de bonne réponse : les curseurs disent ce qu'on aime, pas ce qu'on vaut.</p>
+
+  <div class="toolbar">
+    <a class="back" href="index.html">← Retour à la présentation</a>
+    <button class="primary" id="print" type="button">Imprimer / PDF</button>
+    <button id="reset" type="button">Tout effacer</button>
+  </div>
+
+  <section>
+    <h2>Identité</h2>
+    <div class="grid2">
+      <label class="field">Nom du joueur<input type="text" id="player"></label>
+      <label class="field">Date<input type="date" id="date"></label>
+      <label class="field">Mode de jeu<select id="mode">
+        <option value="">—</option><option>Sur table uniquement</option><option>En ligne uniquement</option><option>Sur table et en ligne</option>
+      </select></label>
+      <label class="field">Plateforme(s) en ligne (si concerné)<input type="text" id="platform" placeholder="Discord, Roll20, Foundry…"></label>
+      <label class="field">Langue(s) parlée(s)<input type="text" id="langs" placeholder="Ex. français (natif), anglais (courant)"></label>
+      <label class="field">Langue(s) de jeu souhaitée(s)<input type="text" id="playlangs" placeholder="Ex. français, ou français et anglais"></label>
+    </div>
+  </section>
+
+  <section>
+    <h2>Caractéristiques</h2>
+    <p class="hint">Ce que je sais faire. 1 = point faible, 3 = correct, 5 = point fort. Soyez honnête : un profil équilibré est un bon profil.</p>
+    <div id="stats"></div>
+    <div class="total" id="statTotal"></div>
+  </section>
+
+  <section>
+    <h2>Compétences</h2>
+    <p class="hint">0 = pas mon truc · 1 = novice · 2 = à l'aise · 3 = ma spécialité.</p>
+    <div id="skills"></div>
+  </section>
+
+  <section>
+    <h2>Curseurs de style</h2>
+    <p class="hint">Ce que j'aime faire. Placez-vous entre les deux pôles ; 3 = au milieu.</p>
+    <div id="cursors"></div>
+  </section>
+
+  <section>
+    <h2>Jauges</h2>
+    <p class="hint">Mon énergie à la table. 1 = vite à plat, 5 = inépuisable.</p>
+    <div id="gauges"></div>
+    <div class="grid2" style="margin-top:8px">
+      <label class="field">Durée de session idéale<select id="duration">
+        <option value="">—</option><option>1 à 2 h</option><option>3 à 4 h</option><option>5 h et plus</option><option>Peu importe</option>
+      </select></label>
+      <label class="field">Fréquence idéale<select id="freq">
+        <option value="">—</option><option>Hebdomadaire</option><option>Toutes les deux semaines</option><option>Mensuelle</option><option>Parties isolées (one-shots)</option>
+      </select></label>
+    </div>
+  </section>
+
+  <section>
+    <h2>Traits</h2>
+    <p class="hint">Comment je me comporte à la table. Cochez environ 3 avantages et 2 désavantages, et ajoutez les vôtres.</p>
+    <h3>Avantages <span class="hint" id="advCount"></span></h3>
+    <div class="chips" id="advantages"></div>
+    <label class="field" style="margin-top:8px">Autre avantage<input type="text" id="advOther"></label>
+    <h3>Désavantages <span class="hint" id="disCount"></span></h3>
+    <div class="chips" id="drawbacks"></div>
+    <label class="field" style="margin-top:8px">Autre désavantage<input type="text" id="disOther"></label>
+  </section>
+
+  <section>
+    <h2>Classe</h2>
+    <p class="hint">Ce qui me motive le plus. On peut en cumuler deux (multiclassage).</p>
+    <div class="grid2">
+      <label class="field">Classe dominante<select id="class1"></select></label>
+      <label class="field">Classe secondaire<select id="class2"></select></label>
+    </div>
+  </section>
+
+  <section id="universes">
+    <h2>Mes univers</h2>
+    <p class="hint">Pour chaque genre, ambiance ou thème, je donne un niveau d'envie de jouer, de 1 (peu d'envie) à 5 (fan), ou ✗ si je préfère l'éviter. Je peux noter directement la liste, ou répondre au questionnaire, qui calcule des niveaux de départ à corriger ensuite.</p>
+    <details class="guide">
+      <summary>Je ne sais pas par où commencer : m'aider à choisir</summary>
+      <p class="hint" style="margin-top:8px">Cochez ce qui vous parle (plusieurs réponses possibles par question, aucune n'est obligatoire). Plus une catégorie revient dans vos réponses, plus son niveau est élevé.</p>
+      <div id="quiz"></div>
+      <div class="suggest" id="suggest"></div>
+      <button type="button" class="primary" id="applySuggest">Calculer mes niveaux</button>
+      <span class="hint" id="applyNote"></span>
+    </details>
+    <div class="legend" id="uniLegend"></div>
+    <p class="legendnote">Pour effacer une note, cliquez de nouveau dessus (ou touche Suppr).</p>
+    <div id="catalog"></div>
+    <h3>Mon univers en un coup d'œil</h3>
+    <div class="uprof" id="uniProfile"></div>
+    <div class="q"><label class="field">Mes univers de référence (jeux, livres, films, séries, jeux vidéo…)<textarea id="refs"></textarea></label></div>
+    <div class="q"><label class="field">L'univers que j'aimerais jouer un jour<input type="text" id="dream"></label></div>
+  </section>
+
+  <section>
+    <h2>Mon profil</h2>
+    <div class="profile">
+      <svg class="map" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="Carte du profil : axe narratif/mécanique et discret/sociable">
+        <rect class="frame" x="10" y="10" width="180" height="180" rx="6"/>
+        <line class="axis" x1="100" y1="10" x2="100" y2="190"/>
+        <line class="axis" x1="10" y1="100" x2="190" y2="100"/>
+        <text x="100" y="8" text-anchor="middle">Sociable</text>
+        <text x="100" y="199" text-anchor="middle">Discret</text>
+        <text x="14" y="97">Narratif</text>
+        <text x="186" y="97" text-anchor="end">Mécanique</text>
+        <circle id="dot" cx="100" cy="100" r="7" visibility="hidden"/>
+      </svg>
+      <div id="summary">Remplissez les deux premiers curseurs de style pour voir votre position sur la carte.</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Questions de séance zéro</h2>
+    <h3>Tonalité souhaitée</h3>
+    <div class="chips" id="tones"></div>
+    <div class="q"><label class="field">Ce que j'aime le plus en jeu de rôle<textarea id="q1"></textarea></label></div>
+    <div class="q"><label class="field">Ce qui m'ennuie ou me frustre<textarea id="q2"></textarea></label></div>
+    <div class="q"><label class="field">Une scène marquante que j'ai vécue autour d'une table<textarea id="q3"></textarea></label></div>
+    <div class="q"><label class="field">Ce que j'attends de cette campagne<textarea id="q4"></textarea></label></div>
+    <div class="grid2 q">
+      <label class="field">Lignes rouges (sujets à ne jamais aborder)<textarea id="lines"></textarea></label>
+      <label class="field">Voiles (sujets possibles, mais hors-champ)<textarea id="veils"></textarea></label>
+    </div>
+    <div class="q"><label class="field">Autre chose à savoir (disponibilités, accessibilité, contraintes)<textarea id="q5"></textarea></label></div>
+  </section>
+</div>
+
+<script>
+const STATS = [
+  ["imagination","Imagination","Créer et visualiser situations, personnages et idées"],
+  ["interpretation","Interprétation","Donner vie à son personnage (voix, attitude, motivations)"],
+  ["ecoute","Écoute","Suivre la narration, retenir les détails, respecter les autres"],
+  ["cooperation","Coopération","Jouer collectif, partager le temps de parole"],
+  ["improvisation","Improvisation","Rebondir face à l'imprévu, accepter les propositions"],
+  ["audace","Audace","Oser les choix risqués ou intéressants plutôt que sûrs"]
+];
+const SKILLS = [
+  ["roleplay","Roleplay","Parler en personnage, mener une scène sociale"],
+  ["tactique","Tactique","Optimiser un combat ou un plan"],
+  ["enquete","Enquête","Relier les indices, poser les bonnes questions"],
+  ["narration","Narration","Proposer des détails ou des scènes qui enrichissent l'histoire"],
+  ["humour","Humour","Détendre l'atmosphère"],
+  ["groupe","Gestion de groupe","Calmer les débats, aider à décider à plusieurs"]
+];
+const CURSORS = [
+  ["cadre","Cadre de jeu","Règles légères et histoire d'abord, ou règles précises et jets qui tranchent","Narratif","Mécanique"],
+  ["regles","Rapport aux règles","Je me lance sur n'importe quel jeu et j'apprends en jouant, ou je me sens mieux quand je connais les règles","Je découvre en jouant","Je veux connaître les règles"],
+  ["interaction","Interaction","Plutôt en tête-à-tête avec le MJ, ou en dialogue permanent avec le groupe","Discret","Sociable"],
+  ["controle","Contrôle de l'histoire","Je suis l'histoire que propose le MJ, ou j'invente aussi des éléments du monde","Spectateur","Co-auteur"],
+  ["rythme","Rythme","Réflexion, exploration et descriptions, ou action rapide et décisions vives","Posé","Dynamique"],
+  ["posture","Posture","Je parle comme mon personnage, ou je décris ce qu'il fait","Immersif","Extérieur"],
+  ["defi","Niveau de défi","Une partie détendue, ou un vrai défi à relever","Détendu","Exigeant"]
+];
+const GAUGES = [
+  ["energie","Énergie","Tenir sur une longue session"],
+  ["patience","Patience","Tenir quand la partie traîne ou que le groupe débat"],
+  ["fairplay","Fair-play","Accepter un jet raté, une mort de personnage, un échec"],
+  ["immersion","Immersion","Entrer dans l'histoire et y rester"]
+];
+const ADV = ["Mémoire du lore","Talent de conteur","Bonne humeur contagieuse","Sens tactique","Esprit d'équipe","Voix expressive","Organisateur de parties"];
+const DIS = ["Métagaming","Monopolise le MJ","Retards chroniques","Mauvais perdant","Paralysie du choix","Perfectionniste des règles","Distrait (téléphone)","Réservé, parle peu"];
+const CLASSES = [
+  ["Acteur","jouer le rôle, vivre des scènes fortes"],
+  ["Stratège","optimiser, résoudre des problèmes"],
+  ["Conteur","faire avancer une belle histoire"],
+  ["Explorateur","découvrir le monde et ses secrets"],
+  ["Bagarreur","l'action, les combats, l'adrénaline"],
+  ["Sociable","passer un bon moment avec ses amis"]
+];
+const TONES = ["Aventure","Épique","Enquête","Horreur","Comédie","Drame","Mystère","Politique / intrigue","Survie"];
+
+const $ = id => document.getElementById(id);
+
+function scale(name, from, to){
+  let h = '<div class="scale" role="radiogroup">';
+  for (let v = from; v <= to; v++){
+    const id = name + "_" + v;
+    h += `<input type="radio" name="${name}" id="${id}" value="${v}"><label for="${id}">${v === 0 ? "–" : v}</label>`;
+  }
+  return h + "</div>";
+}
+function rows(list, prefix, from, to){
+  return list.map(([k,t,d]) => `<div class="row"><div class="lab"><strong>${t}</strong><small>${d}</small></div>${scale(prefix + k, from, to)}</div>`).join("");
+}
+function chips(list, prefix){
+  return list.map((t,i) => `<input type="checkbox" id="${prefix}${i}"><label for="${prefix}${i}">${t}</label>`).join("");
+}
+
+$("stats").innerHTML = rows(STATS, "stat_", 1, 5);
+$("skills").innerHTML = rows(SKILLS, "skill_", 0, 3) +
+  `<div class="row"><div class="lab"><input type="text" id="skillCustomName" placeholder="Autre compétence…"></div>${scale("skill_custom", 0, 3)}</div>`;
+$("gauges").innerHTML = rows(GAUGES, "gauge_", 1, 5);
+$("cursors").innerHTML = CURSORS.map(([k,t,d,a,b]) =>
+  `<div class="cursor"><div class="ctitle">${t}</div><div class="cdesc">${d}</div>
+   <div class="cbar"><div class="pole l">${a}</div>${scale("cur_" + k, 1, 5)}<div class="pole r">${b}</div></div></div>`).join("");
+$("advantages").innerHTML = chips(ADV, "adv");
+$("drawbacks").innerHTML = chips(DIS, "dis");
+$("tones").innerHTML = chips(TONES, "tone");
+const opts = '<option value="">—</option>' + CLASSES.map(([n,d]) => `<option value="${n}">${n} : ${d}</option>`).join("");
+$("class1").innerHTML = opts;
+$("class2").innerHTML = opts;
+
+/* ---- univers : genres, ambiances, thèmes ---- */
+const ROLE = "player";
+const GM = ROLE === "gm";
+const VERB = GM ? "animer" : "jouer";
+/* niveaux : x = à éviter, 1 à 5 = niveau d'envie */
+const LEVELS = [
+  ["x", "✗", GM ? "Je préfère ne pas animer" : "Je préfère éviter"],
+  ["1", "1", "Peu d'envie"],
+  ["2", "2", "Curieux"],
+  ["3", "3", "À l'aise"],
+  ["4", "4", "Beaucoup d'envie"],
+  ["5", "5", GM ? "Fan : j'adore animer" : "Fan : j'adore"]
+];
+
+const UNIVERSE_GROUPS = [
+  {title:"Univers", hint:"Le décor et le genre de l'histoire.", items:[
+    ["haute","Haute fantasy","Magie omniprésente, royaumes, quêtes épiques"],
+    ["epee","Épée et sorcellerie","Fantasy rude, magie rare et dangereuse (basse fantasy)"],
+    ["mythes","Mythes et légendes","Dieux, héros, folklore, Arthur, Vikings, chamanisme"],
+    ["surnat","Surnaturel moderne","Magie ou monstres cachés dans notre monde (fantasy urbaine, occulte, chasseurs de monstres)"],
+    ["sf","Science-fiction spatiale","Vaisseaux, empires, planètes, multivers, robots (space opera, SF dure)"],
+    ["cyber","Cyberpunk","Mégacorporations, technologie, bas-fonds"],
+    ["postapo","Post-apocalyptique","Survivre après la chute du monde"],
+    ["hero","Super-héros","Pouvoirs, capes, identités secrètes"],
+    ["steam","Steampunk et ère victorienne","Vapeur, aéronefs, société du XIXe siècle"],
+    ["western","Western","Conquête de l'Ouest, duels, frontière"],
+    ["histo","Historique","Antiquité, Moyen Âge, préhistoire, guerres, histoire alternative"],
+    ["pulp","Aventure pulp et cape et d'épée","Pirates, explorateurs, mers et îles, duels"],
+    ["polar","Polar et enquête","Policier, noir, mystère, gangsters"],
+    ["espion","Espionnage et conspirations","Agents secrets, complots, corporations"],
+    ["horreur","Horreur","Gothique, zombies, occulte, peur"],
+    ["asie","Asie, arts martiaux et manga","Oriental, kaiju, combats d'arts martiaux"],
+    ["cartoon","Cartoon, animaux et enfance","Animaux, anthropomorphes, univers colorés"]
+  ]},
+  {title:"Ambiance", hint:"Le ton et l'atmosphère de la partie.", items:[
+    ["sombre","Sombre","Noir, gothique, lourd, choix difficiles"],
+    ["humour","Humoristique ou satirique","Comédie, absurde, parodie"],
+    ["epique","Épique et héroïque","Grandes actions, destins exceptionnels"],
+    ["mystere","Mystérieux","Secrets, indices, révélations"],
+    ["angoisse","Angoissant","Tension, peur, frissons"],
+    ["realiste","Réaliste et brut","Proche de la vie réelle, conséquences concrètes"],
+    ["merveil","Merveilleux et poétique","Enchanté, symbolique, féerique"]
+  ]},
+  {title:"Thèmes", hint:"Les sujets qu'on aime voir au cœur de l'histoire.", items:[
+    ["politique","Politique et pouvoir","Intrigues, alliances, factions"],
+    ["religion","Religion et croyances","Cultes, foi, dogmes"],
+    ["guerre","Guerre et conflits","Armées, batailles, stratégie"],
+    ["sport","Sport et compétition","Tournois, rivalités, entraînement"],
+    ["survie","Survie","Ressources rares, environnements hostiles"],
+    ["explo","Exploration","Découvrir des lieux, des peuples, des secrets"],
+    ["romance","Romance","Relations amoureuses, liens entre personnages"],
+    ["psy","Pouvoirs psychiques","Esprit, télépathie, psionique"]
+  ]}
+];
+const ALL_U = UNIVERSE_GROUPS.flatMap(g => g.items);
+const U_ORDER = ALL_U.map(u => u[0]);
+const U_LABEL = Object.fromEntries(ALL_U.map(([id, l]) => [id, l]));
+
+const QUIZ = [
+  {q:"Dans quel décor aimeriez-vous vous réveiller demain ?", a:[
+    ["Un château, une forêt enchantée ou un donjon", ["haute","epee","merveil"]],
+    ["Un vaisseau spatial ou une station orbitale", ["sf"]],
+    ["Une grande ville la nuit, sous la pluie et les néons", ["cyber","polar"]],
+    ["Un navire, une île inconnue ou une jungle", ["pulp","explo"]],
+    ["Un monde dévasté après la catastrophe", ["postapo","survie"]],
+    ["Une ville d'aujourd'hui où rien n'est ce qu'il paraît", ["surnat","espion","polar"]],
+    ["Une autre époque : Antiquité, Vikings, Far West…", ["histo","mythes","western"]]
+  ]},
+  {q:"Quelle histoire vous ferait rester jusqu'à la fin ?", a:[
+    ["Une grande quête avec des héros", ["haute","epique","mythes"]],
+    ["Un thriller avec des secrets et des trahisons", ["polar","espion","mystere"]],
+    ["Une histoire qui fait peur", ["horreur","angoisse"]],
+    ["Une comédie ou un dessin animé", ["cartoon","humour"]],
+    ["Un film de super-héros ou d'action", ["hero","pulp","epique"]],
+    ["Arts martiaux, animation japonaise ou monstres géants", ["asie"]],
+    ["Un western ou une grande fresque historique", ["western","histo"]]
+  ]},
+  {q:"Que préférez-vous faire dans une histoire ?", a:[
+    ["Explorer des lieux inconnus", ["explo","pulp","sf"]],
+    ["Résoudre une énigme ou démasquer un coupable", ["polar","mystere"]],
+    ["Me battre et vaincre des monstres", ["epee","epique","surnat"]],
+    ["Négocier, manœuvrer, intriguer", ["politique","espion"]],
+    ["Survivre dans un monde hostile", ["survie","postapo","horreur"]],
+    ["Rire et vivre des situations absurdes", ["humour","cartoon"]],
+    ["Vivre des relations fortes entre personnages", ["romance"]],
+    ["Me mesurer aux autres (tournois, rivalités)", ["sport"]]
+  ]},
+  {q:"Quelle ambiance vous met à l'aise ?", a:[
+    ["Sombre et lourde, où les choix ont un prix", ["sombre","realiste","polar"]],
+    ["Légère, où l'on rit beaucoup", ["humour"]],
+    ["Héroïque, avec des personnages hors du commun", ["epique","hero"]],
+    ["Inquiétante, où l'on frissonne", ["angoisse","horreur"]],
+    ["Poétique ou enchantée", ["merveil"]],
+    ["Proche de la réalité", ["realiste"]],
+    ["Pleine de mystères à éclaircir", ["mystere"]]
+  ]},
+  {q:"Quelle place pour le surnaturel ?", a:[
+    ["Aucune : tout reste plausible", ["realiste","histo","espion","polar"]],
+    ["Un peu, caché dans notre monde", ["surnat"]],
+    ["Beaucoup : c'est un monde de magie", ["haute","epee","mythes"]],
+    ["De la technologie avancée plutôt que de la magie", ["sf","cyber"]],
+    ["Des pouvoirs extraordinaires", ["hero","psy"]]
+  ]},
+  {q:"Quelle époque vous attire ?", a:[
+    ["Le passé lointain : Antiquité, Moyen Âge, Vikings, préhistoire", ["histo","mythes","epee"]],
+    ["Le XIXe siècle : ère victorienne, Far West", ["steam","western"]],
+    ["Aujourd'hui", ["surnat","polar","espion"]],
+    ["Un futur proche", ["cyber","postapo"]],
+    ["Un futur lointain", ["sf"]],
+    ["Peu importe : un monde imaginaire", ["haute","merveil"]]
+  ]},
+  {q:"Je préfère ne pas " + VERB + "…", avoid:true, a:[
+    ["Des histoires qui font peur", ["horreur","angoisse"]],
+    ["La guerre et la violence réaliste", ["guerre","realiste"]],
+    ["Des sujets religieux", ["religion"]],
+    ["Des ambiances très sombres", ["sombre"]],
+    ["Des histoires de romance", ["romance"]],
+    ["De l'humour absurde ou de la parodie", ["humour","cartoon"]]
+  ]}
+];
+
+function uniRow([id, label, hint]){
+  let h = `<div class="urow"><div class="lab"><strong>${label}</strong><small>${hint}</small></div><div class="tri" role="radiogroup" aria-label="${label}">`;
+  LEVELS.forEach(([v, sym, txt]) => {
+    h += `<input type="radio" name="u_${id}" id="u_${id}_${v}" value="${v}"><label for="u_${id}_${v}" title="${txt}">${sym}<span class="sr">${txt}</span></label>`;
+  });
+  return h + "</div></div>";
+}
+$("catalog").innerHTML = UNIVERSE_GROUPS.map(g =>
+  `<div class="ugroup"><h3>${g.title}</h3><p class="hint">${g.hint}</p><div class="ugrid">${g.items.map(uniRow).join("")}</div></div>`).join("");
+$("uniLegend").innerHTML = LEVELS.map(([v, sym, txt]) => `<span><b>${sym}</b> ${txt}</span>`).join("");
+$("quiz").innerHTML = QUIZ.map((qq, qi) =>
+  `<div class="qz"><p>${qi + 1}. ${qq.q}</p><div class="chips">` +
+  qq.a.map(([t], ai) => `<input type="checkbox" id="qz${qi}_${ai}"><label for="qz${qi}_${ai}">${t}</label>`).join("") +
+  "</div></div>").join("");
+
+/* cliquer de nouveau sur la note choisie, ou Suppr, efface la note */
+let triWas = false;
+document.addEventListener("pointerdown", e => {
+  const l = e.target.closest ? e.target.closest(".tri label") : null;
+  triWas = l ? $(l.htmlFor).checked : false;
+});
+document.addEventListener("click", e => {
+  if (triWas && e.target.matches && e.target.matches(".tri input") && e.target.checked){
+    e.target.checked = false;
+    triWas = false;
+    refresh(); save();
+  }
+});
+document.addEventListener("keydown", e => {
+  if ((e.key === "Delete" || e.key === "Backspace") && e.target.matches && e.target.matches(".tri input")){
+    document.querySelectorAll(`input[name="${e.target.name}"]`).forEach(r => { r.checked = false; });
+    e.preventDefault();
+    refresh(); save();
+  }
+});
+
+function uniState(id){
+  const r = document.querySelector(`input[name="u_${id}"]:checked`);
+  return r ? r.value : null;
+}
+/* une réponse = niveau 2 (curieux), deux = 3, trois = 4, quatre ou plus = 5 */
+function quizResult(){
+  const sc = {}, av = {};
+  QUIZ.forEach((qq, qi) => qq.a.forEach(([t, ids], ai) => {
+    if (!$(`qz${qi}_${ai}`).checked) return;
+    const target = qq.avoid ? av : sc;
+    ids.forEach(id => { target[id] = (target[id] || 0) + 1; });
+  }));
+  const levels = {};
+  Object.keys(sc).forEach(id => { if (!(id in av)) levels[id] = Math.min(5, sc[id] + 1); });
+  const ranked = Object.keys(levels).sort((a, b) => levels[b] - levels[a] || U_ORDER.indexOf(a) - U_ORDER.indexOf(b));
+  const evite = Object.keys(av).sort((a, b) => U_ORDER.indexOf(a) - U_ORDER.indexOf(b));
+  return {levels, ranked, evite};
+}
+function refreshSuggest(){
+  const r = quizResult();
+  const box = $("suggest"), btn = $("applySuggest");
+  if (!r.ranked.length && !r.evite.length){
+    box.textContent = "Répondez à quelques questions : vos niveaux proposés apparaîtront ici.";
+    btn.disabled = true;
+    return;
+  }
+  let h = "<p><b>Niveaux proposés :</b></p><p>";
+  h += r.ranked.map(id => `<span class="lv"><b>${r.levels[id]}</b>${U_LABEL[id]}</span>`).join("");
+  h += r.evite.map(id => `<span class="lv x"><b>✗</b>${U_LABEL[id]}</span>`).join("");
+  box.innerHTML = h + "</p>";
+  btn.disabled = false;
+}
+$("applySuggest").addEventListener("click", () => {
+  const r = quizResult();
+  let n = 0;
+  const set = (id, v) => { $(`u_${id}_${v}`).checked = true; n++; };
+  r.ranked.forEach(id => set(id, r.levels[id]));
+  r.evite.forEach(id => set(id, "x"));
+  $("applyNote").textContent = ` ${n} catégories notées. Le questionnaire remplace les notes des catégories qu'il concerne ; les autres ne sont pas modifiées, et tout reste ajustable dans la liste.`;
+  refresh(); save();
+});
+function refreshUniverses(){
+  const avoid = [];
+  let html = "";
+  UNIVERSE_GROUPS.forEach(g => {
+    const rated = [];
+    g.items.forEach(([id, label], idx) => {
+      const s = uniState(id);
+      if (s === "x") avoid.push(label);
+      else if (s) rated.push({label, v: +s, idx});
+    });
+    rated.sort((a, b) => b.v - a.v || a.idx - b.idx);
+    html += `<h4>${g.title}</h4>` + (rated.length
+      ? rated.map(x => `<div class="pl"><span>${x.label}</span><span class="dots" title="niveau ${x.v} sur 5">${"●".repeat(x.v)}${"○".repeat(5 - x.v)}</span></div>`).join("")
+      : '<div class="none">Pas encore de note.</div>');
+  });
+  html += `<h4>${GM ? "Je préfère ne pas animer" : "Je préfère éviter"}</h4>` +
+    (avoid.length ? `<div class="pl"><span>${avoid.join(", ")}</span></div>` : '<div class="none">Rien.</div>');
+  $("uniProfile").innerHTML = html;
+  refreshSuggest();
+}
+
+/* ---- calculs affichés ---- */
+function val(name){
+  const r = document.querySelector(`input[name="${name}"]:checked`);
+  return r ? +r.value : null;
+}
+function count(prefix, n){
+  let c = 0;
+  for (let i = 0; i < n; i++) if ($(prefix + i).checked) c++;
+  return c;
+}
+function refresh(){
+  let sum = 0, filled = 0;
+  STATS.forEach(([k]) => { const v = val("stat_" + k); if (v){ sum += v; filled++; } });
+  $("statTotal").innerHTML = filled
+    ? `Total : <b>${sum}</b> sur ${STATS.length * 5} (moyenne ${(sum / filled).toFixed(1)}), ${filled}/${STATS.length} remplies.`
+    : "";
+  $("advCount").textContent = `(${count("adv", ADV.length)} cochés)`;
+  $("disCount").textContent = `(${count("dis", DIS.length)} cochés)`;
+
+  const x = val("cur_cadre"), y = val("cur_interaction");
+  const dot = $("dot");
+  const parts = [];
+  if (x !== null && y !== null){
+    dot.setAttribute("cx", 30 + (x - 1) * 35);
+    dot.setAttribute("cy", 170 - (y - 1) * 35);
+    dot.setAttribute("visibility", "visible");
+  } else {
+    dot.setAttribute("visibility", "hidden");
+  }
+  if (x !== null) parts.push(x < 3 ? "plutôt <b>narratif</b>" : x > 3 ? "plutôt <b>mécanique</b>" : "<b>équilibré</b> entre narration et mécanique");
+  if (y !== null) parts.push(y < 3 ? "plutôt <b>discret</b> dans les échanges" : y > 3 ? "plutôt <b>sociable</b> à la table" : "<b>à l'aise</b> avec ou sans échanges");
+  let html = parts.length ? "Profil : " + parts.join(", ") + "." : "Remplissez les deux premiers curseurs de style pour voir votre position sur la carte.";
+  const c1 = $("class1").value, c2 = $("class2").value;
+  if (c1) html += `<br>Classe : <b>${c1}</b>` + (c2 ? ` / ${c2}` : "") + ".";
+  $("summary").innerHTML = html;
+  refreshUniverses();
+}
+
+/* ---- sauvegarde locale (facultative) ---- */
+const KEY = "fiche-joueur-jdr-v1";
+function fields(){ return [...document.querySelectorAll("input, textarea, select")]; }
+function keyOf(el){ return el.type === "radio" ? el.name : el.id; }
+function save(){
+  const data = {};
+  fields().forEach(el => {
+    if (el.type === "radio"){ if (el.checked) data[el.name] = el.value; }
+    else if (el.type === "checkbox"){ data[el.id] = el.checked; }
+    else data[el.id] = el.value;
+  });
+  try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {}
+}
+function load(){
+  let data = {};
+  try { data = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) {}
+  fields().forEach(el => {
+    const k = keyOf(el);
+    if (!(k in data)) return;
+    if (el.type === "radio") el.checked = (el.value === data[k]);
+    else if (el.type === "checkbox") el.checked = !!data[k];
+    else el.value = data[k];
+  });
+}
+document.addEventListener("input", () => { refresh(); save(); });
+document.addEventListener("change", () => { refresh(); save(); });
+$("print").addEventListener("click", () => window.print());
+$("reset").addEventListener("click", () => {
+  if (!confirm("Effacer toute la fiche ?")) return;
+  fields().forEach(el => {
+    if (el.type === "radio" || el.type === "checkbox") el.checked = false; else el.value = "";
+  });
+  try { localStorage.removeItem(KEY); } catch (e) {}
+  refresh();
+});
+
+load();
+refresh();
+</script>
+</body>
+</html>

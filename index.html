@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trouvez votre table de JDR</title>
+<style>
+:root{--bg:#f5f2ec;--card:#fff;--ink:#23262a;--muted:#68717a;--line:#dcd7cd;--soft:#ece8df;--pl:#8a3b2a;--gm:#2f5d6b;--on:#fff;--ok:#2f7a45;--warn:#b0452f}
+@media (prefers-color-scheme:dark){:root{--bg:#16181a;--card:#202326;--ink:#ebe8e2;--muted:#9aa3aa;--line:#363b40;--soft:#292d31;--pl:#e08a6f;--gm:#7fc0d1;--on:#16181a;--ok:#8bc79a;--warn:#e58a7a}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:inherit}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.2;margin:0}
+h2{font-size:1.8rem;margin-bottom:6px}
+h3{font-size:1.15rem}
+.lead{font-size:1.1rem;color:var(--muted);max-width:62ch}
+.muted{color:var(--muted)}
+.eyebrow{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:8px}
+
+nav.top{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+nav.top .wrap{display:flex;gap:4px 16px;align-items:center;flex-wrap:wrap;padding-top:8px;padding-bottom:8px;font-size:.9rem}
+nav.top b{font-family:Georgia,serif;margin-right:auto}
+nav.top a{text-decoration:none;color:var(--muted)}
+nav.top a:hover{color:var(--ink)}
+
+section.block{padding:56px 0;border-top:1px solid var(--line)}
+section.hero{padding:48px 0 56px;border-top:0}
+.hero .grid{display:grid;grid-template-columns:1.2fr 1fr;gap:32px;align-items:center}
+@media (max-width:820px){.hero .grid{grid-template-columns:1fr}}
+.hero h1{font-size:2.6rem;margin-bottom:14px}
+@media (max-width:520px){.hero h1{font-size:2rem}}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 8px}
+.btn{display:inline-block;padding:11px 18px;border-radius:10px;text-decoration:none;font-weight:600;border:1px solid transparent}
+.btn.pl{background:var(--pl);color:var(--on)}
+.btn.gm{background:var(--gm);color:var(--on)}
+.btn.ghost{border-color:var(--line);background:var(--card)}
+.note{font-size:.85rem;color:var(--muted)}
+
+.sheet{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 8px 24px rgba(0,0,0,.06)}
+.sheet .head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:10px}
+.sheet .head b{font-family:Georgia,serif;font-size:1.1rem}
+.stat{display:grid;grid-template-columns:120px 1fr 20px;gap:8px;align-items:center;font-size:.88rem;margin:5px 0}
+.bar{height:8px;border-radius:99px;background:var(--soft);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--pl)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chip{font-size:.8rem;padding:3px 10px;border-radius:99px;border:1px solid var(--line);background:var(--soft)}
+.chip.love{background:var(--pl);border-color:var(--pl);color:var(--on)}
+.chip.no{border-color:var(--warn);color:var(--warn)}
+.chip.gm{background:var(--gm);border-color:var(--gm);color:var(--on)}
+
+.cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
+@media (max-width:820px){.cards3{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.card .num{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--bg);font-weight:700;margin-bottom:8px}
+.card h3{margin-bottom:4px}
+.card p{margin:0;color:var(--muted);font-size:.95rem}
+
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}
+@media (max-width:820px){.two{grid-template-columns:1fr}}
+.two .card.pl{border-top:4px solid var(--pl)}
+.two .card.gm{border-top:4px solid var(--gm)}
+.list{margin:10px 0 14px;padding:0;list-style:none}
+.list li{padding:6px 0;border-top:1px solid var(--line);font-size:.93rem}
+.list li:first-child{border-top:0}
+.list b{display:inline-block;min-width:130px}
+.list span{color:var(--muted)}
+
+.demo{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:22px}
+.pick{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+@media (max-width:640px){.pick{grid-template-columns:1fr}}
+.pick label{font-size:.85rem;color:var(--muted);display:block}
+select{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 10px;margin-top:3px}
+.result{display:grid;grid-template-columns:200px 1fr;gap:22px;align-items:start}
+@media (max-width:700px){.result{grid-template-columns:1fr}}
+.big{text-align:center;padding:14px;border-radius:12px;background:var(--soft)}
+.big b{display:block;font-family:Georgia,serif;font-size:3.2rem;line-height:1}
+.big span{font-size:.85rem;color:var(--muted)}
+.big.off b{font-size:1.4rem;color:var(--warn);margin:6px 0}
+.sub{margin:0 0 10px}
+.dim{margin:10px 0}
+.dim .row{display:flex;justify-content:space-between;font-size:.88rem}
+.track{position:relative;height:8px;border-radius:99px;background:var(--soft);margin:8px 6px 4px}
+.track i{position:absolute;top:50%;width:16px;height:16px;border-radius:50%;transform:translate(-50%,-50%);border:2px solid var(--card)}
+.track i.p{background:var(--pl)}
+.track i.g{background:var(--gm)}
+.poles{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted)}
+.score{display:grid;grid-template-columns:130px 1fr 44px;gap:10px;align-items:center;font-size:.9rem;margin:6px 0}
+.score .bar i{background:var(--ink)}
+.flags{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.flag{font-size:.85rem;padding:3px 10px;border-radius:99px;border:1px solid var(--line)}
+.flag.ok{color:var(--ok);border-color:var(--ok)}
+.flag.ko{color:var(--warn);border-color:var(--warn)}
+.legend{font-size:.8rem;color:var(--muted);display:flex;gap:14px;margin-bottom:6px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px}
+table{border-collapse:collapse;width:100%}
+th,td{padding:6px 8px;text-align:center;font-size:.9rem}
+th{font-weight:600;color:var(--muted);font-size:.8rem}
+th:first-child,td:first-child{text-align:left}
+.matrix td{padding:3px}
+.matrix button{width:100%;font:inherit;border:1px solid var(--line);border-radius:8px;padding:8px 4px;cursor:pointer;color:var(--ink);background:var(--card)}
+.matrix button.sel{outline:2px solid var(--ink)}
+.matrix button.na{color:var(--muted);background:var(--soft)}
+details{margin-top:14px;font-size:.9rem;color:var(--muted)}
+summary{cursor:pointer;color:var(--ink)}
+details p{margin:8px 0}
+
+.game{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}
+@media (max-width:820px){.game{grid-template-columns:1fr}}
+.kv{display:grid;grid-template-columns:130px 1fr;gap:4px 10px;font-size:.9rem;margin:10px 0}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0}
+.ranked .item{display:grid;grid-template-columns:1fr 54px;gap:4px 10px;padding:9px 0;border-top:1px solid var(--line);align-items:center}
+.ranked .item:first-child{border-top:0}
+.ranked .pc{font-family:Georgia,serif;font-size:1.3rem;text-align:right}
+.ranked small{color:var(--muted)}
+
+.types{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
+@media (max-width:820px){.types{grid-template-columns:1fr}}
+.plan input{width:20px;height:20px;accent-color:var(--gm)}
+.plan td.full{background:color-mix(in srgb,var(--ok) 18%,transparent)}
+.plan tfoot td{font-size:.8rem;color:var(--muted)}
+.banner{margin-top:14px;padding:12px 14px;border-radius:10px;border:1px dashed var(--line);background:var(--soft)}
+.banner.locked{border:1px solid var(--ok);background:color-mix(in srgb,var(--ok) 14%,transparent)}
+.banner ul{margin:6px 0 0;padding-left:18px;font-size:.9rem}
+
+.road{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}
+@media (max-width:820px){.road{grid-template-columns:1fr}}
+.road .card h3{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.tag{font-family:system-ui,sans-serif;font-size:.72rem;padding:2px 9px;border-radius:99px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.tag.done{border-color:var(--ok);color:var(--ok)}
+.road ul{margin:10px 0 0;padding-left:18px;font-size:.93rem}
+.road li{margin:4px 0}
+.qs{margin:18px 0 0;padding:0;list-style:none;display:grid;gap:12px}
+.qs li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.qs b{display:block;margin-bottom:2px}
+.qs span{color:var(--muted);font-size:.93rem}
+footer{border-top:1px solid var(--line);padding:24px 0 48px;color:var(--muted);font-size:.85rem}
+</style>
+</head>
+<body>
+
+<nav class="top"><div class="wrap">
+  <b>Maquette</b>
+  <a href="#idee">L'idée</a>
+  <a href="#phase1">Phase 1 : profils</a>
+  <a href="#demo">Démo d'affinité</a>
+  <a href="#jeux">Phase 2 : jeux</a>
+  <a href="#tables">Tables</a>
+  <a href="#route">Feuille de route</a>
+  <a href="#questions">Votre avis</a>
+</div></nav>
+
+<main>
+<!-- ============ ACCUEIL ============ -->
+<section class="block hero"><div class="wrap grid">
+  <div>
+    <div class="eyebrow">Projet en cours de conception · nom provisoire</div>
+    <h1>Créez votre personnage de rôliste. Trouvez votre table.</h1>
+    <p class="lead">Une application pour recenser les joueurs et les maîtres de jeu de JDR. Chacun se définit comme on crée un personnage, décrit les univers et les règles qu'il aime, puis l'application le rapproche de ceux qui lui ressemblent, et plus tard des jeux et des tables qui lui conviennent.</p>
+    <div class="cta">
+      <a class="btn pl" href="fiche-joueur-jdr.html">Voir la fiche joueur</a>
+      <a class="btn gm" href="fiche-mj-jdr.html">Voir la fiche maître de jeu</a>
+      <a class="btn ghost" href="#demo">Voir la démo d'affinité ↓</a>
+    </div>
+    <p class="note">Ceci est une maquette de démonstration : les profils d'exemple sont fictifs et rien n'est envoyé à un serveur.</p>
+  </div>
+  <div class="sheet" aria-hidden="true">
+    <div class="head"><b>Profil « Conteur »</b><span class="muted">joueur · exemple</span></div>
+    <div class="stat"><span>Imagination</span><div class="bar"><i style="width:100%"></i></div><b>5</b></div>
+    <div class="stat"><span>Interprétation</span><div class="bar"><i style="width:80%"></i></div><b>4</b></div>
+    <div class="stat"><span>Coopération</span><div class="bar"><i style="width:80%"></i></div><b>4</b></div>
+    <div class="stat"><span>Improvisation</span><div class="bar"><i style="width:60%"></i></div><b>3</b></div>
+    <div class="chips">
+      <span class="chip">Cadre : narratif</span><span class="chip">Co-auteur</span><span class="chip">En ligne ou sur table</span>
+    </div>
+    <div class="chips">
+      <span class="chip love">♥ Haute fantasy</span><span class="chip love">♥ Mythes et légendes</span><span class="chip love">♥ Merveilleux</span><span class="chip no">✗ Horreur</span>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ IDÉE ============ -->
+<section class="block" id="idee"><div class="wrap">
+  <div class="eyebrow">L'idée</div>
+  <h2>Se définir comme on crée un personnage</h2>
+  <p class="lead">Les rôlistes savent déjà décrire un personnage avec des caractéristiques, des compétences et une classe. On applique le même langage à la personne derrière la table, pour que remplir son profil soit un petit jeu plutôt qu'un formulaire.</p>
+  <div class="cards3">
+    <div class="card"><div class="num">1</div><h3>Je me crée</h3><p>Caractéristiques, compétences, curseurs de style, jauges, traits, classe : une fiche de joueur ou de maître de jeu.</p></div>
+    <div class="card"><div class="num">2</div><h3>Je définis mon univers</h3><p>Genres, ambiances, thèmes, type de règles. Je note chaque catégorie de 1 à 5, directement ou en répondant à un court questionnaire.</p></div>
+    <div class="card"><div class="num">3</div><h3>On me rapproche</h3><p>Un pourcentage d'affinité entre joueurs, avec les maîtres de jeu, puis avec les jeux et les tables.</p></div>
+  </div>
+</div></section>
+
+<!-- ============ PHASE 1 ============ -->
+<section class="block" id="phase1"><div class="wrap">
+  <div class="eyebrow">Phase 1 · maquette prête</div>
+  <h2>Les profils : joueur et maître de jeu</h2>
+  <p class="lead">Deux fiches distinctes, construites sur le même modèle. Les curseurs disent ce qu'on aime faire, pas ce qu'on vaut : un joueur « narratif » n'est pas moins bon qu'un joueur « mécanique ».</p>
+  <div class="two">
+    <div class="card pl">
+      <h3>Fiche de joueur</h3>
+      <ul class="list">
+        <li><b>Identité</b><span>mode de jeu (table, en ligne), langues</span></li>
+        <li><b>Caractéristiques</b><span>imagination, interprétation, écoute, coopération, improvisation, audace</span></li>
+        <li><b>Compétences</b><span>roleplay, tactique, enquête, narration, humour, gestion de groupe</span></li>
+        <li><b>Curseurs de style</b><span>narratif ↔ mécanique, rapport aux règles, interaction, contrôle, rythme, posture, défi</span></li>
+        <li><b>Jauges</b><span>énergie, patience, fair-play, immersion</span></li>
+        <li><b>Traits et classe</b><span>avantages, désavantages, six classes</span></li>
+        <li><b>Mes univers</b><span>32 catégories notées de 1 à 5</span></li>
+        <li><b>Séance zéro</b><span>tonalité, lignes rouges et voiles</span></li>
+      </ul>
+      <a class="btn pl" href="fiche-joueur-jdr.html">Ouvrir la fiche joueur</a>
+    </div>
+    <div class="card gm">
+      <h3>Fiche de maître de jeu</h3>
+      <ul class="list">
+        <li><b>Identité</b><span>mode de jeu (table, en ligne), langues</span></li>
+        <li><b>Caractéristiques</b><span>imagination, improvisation, PNJ, lecture de la table, équité, organisation, présence</span></li>
+        <li><b>Compétences</b><span>ambiance, rythme, intrigues, combats, arbitrage, accueil des débutants, gestion des tensions</span></li>
+        <li><b>Curseurs de style</b><span>préparation, bac à sable ↔ scénario, règles, partage du contrôle, dangerosité, ton…</span></li>
+        <li><b>Jauges</b><span>énergie, patience, détachement, temps de préparation</span></li>
+        <li><b>Traits et classe</b><span>avantages, désavantages, six classes</span></li>
+        <li><b>Mes univers</b><span>mêmes 32 catégories, notées de 1 à 5</span></li>
+        <li><b>Séance zéro</b><span>règles de table, outils de sécurité, lignes rouges</span></li>
+      </ul>
+      <a class="btn gm" href="fiche-mj-jdr.html">Ouvrir la fiche MJ</a>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>« Mes univers » : une liste, ou un questionnaire pour se guider</h3>
+    <p style="margin-top:6px">32 catégories regroupées en trois axes : <b>17 univers</b> (haute fantasy, cyberpunk, western, polar, horreur…), <b>7 ambiances</b> (sombre, épique, humoristique…) et <b>8 thèmes</b> (politique, survie, romance…). On peut noter directement chaque catégorie de 1 (peu d'envie) à 5 (fan), ou ✗ pour éviter. Pour ceux qui ne savent pas par où commencer, sept questions concrètes calculent des niveaux de départ, à corriger ensuite.</p>
+  </div>
+</div></section>
+
+<!-- ============ DÉMO AFFINITÉ ============ -->
+<section class="block" id="demo"><div class="wrap">
+  <div class="eyebrow">Démo interactive</div>
+  <h2>Le calcul d'affinité</h2>
+  <p class="lead">Avec des profils d'exemple, voici comment on pourrait rapprocher un joueur et un maître de jeu. Changez les profils, ou cliquez une case de la matrice.</p>
+
+  <div class="demo">
+    <div class="pick">
+      <label>Joueur<select id="selP"></select></label>
+      <label>Maître de jeu<select id="selM"></select></label>
+    </div>
+    <div class="result" id="result"></div>
+    <details>
+      <summary>Comment le pourcentage est calculé (version de démonstration)</summary>
+      <p><b>Style de jeu</b> : on compare les curseurs communs (cadre de jeu, rapport aux règles, partage du contrôle). Plus les deux personnes sont proches sur un curseur, plus la similarité est haute.</p>
+      <p><b>Univers</b> : on compare les niveaux notés sur les 32 catégories (similarité cosinus). Une catégorie que l'un évite (✗) alors que l'autre la note 3 ou plus retire des points.</p>
+      <p><b>Pratique</b> : le mode de jeu et la langue sont des filtres, pas des points. S'ils sont incompatibles, aucune table n'est proposée.</p>
+      <p>Pondération de l'exemple : 45 % style, 55 % univers. Ce n'est qu'une première idée à affiner avec de vrais profils.</p>
+    </details>
+  </div>
+
+  <div class="demo">
+    <h3 style="margin-bottom:4px">Matrice des affinités</h3>
+    <p class="note" style="margin:0 0 10px">Tous les joueurs d'exemple face à tous les maîtres de jeu. « — » signifie que le mode de jeu ou la langue empêche toute table.</p>
+    <div id="matrix"></div>
+  </div>
+</div></section>
+
+<!-- ============ PHASE 2 : JEUX ============ -->
+<section class="block" id="jeux"><div class="wrap">
+  <div class="eyebrow">Phase 2 · à concevoir</div>
+  <h2>Une base de jeux de rôle, reliée aux profils</h2>
+  <p class="lead">Les maîtres de jeu déclarent les jeux qu'ils proposent, et les joueurs trouvent les jeux qui leur correspondent chez des maîtres de jeu réels. Chaque jeu est décrit avec les mêmes catégories que les profils, ce qui permet de les rapprocher directement.</p>
+
+  <div class="game">
+    <div class="card">
+      <div class="eyebrow">Exemple de fiche de jeu (jeu fictif)</div>
+      <h3>Les Marches d'Argent</h3>
+      <div class="chips" style="margin-top:8px">
+        <span class="chip love">Haute fantasy</span><span class="chip love">Mythes et légendes</span><span class="chip">Épique et héroïque</span><span class="chip">Exploration</span>
+      </div>
+      <dl class="kv">
+        <dt>Type de règles</dt><dd>Narratif, règles légères</dd>
+        <dt>Complexité</dt><dd>2 sur 5</dd>
+        <dt>Joueurs</dt><dd>3 à 5</dd>
+        <dt>Durée d'une séance</dt><dd>3 à 4 h</dd>
+        <dt>Format</dt><dd>Campagne ou one-shot</dd>
+        <dt>Langue</dt><dd>Français</dd>
+        <dt>Proposé par</dt><dd>2 maîtres de jeu</dd>
+      </dl>
+      <p class="note" style="margin:0">Ce que chaque jeu devrait porter : univers, ambiance, thèmes, type de règles, complexité, nombre de joueurs, durée, format, langue.</p>
+    </div>
+    <div class="card">
+      <div class="eyebrow">Jeux suggérés pour un joueur</div>
+      <label class="note" for="selG">Joueur d'exemple</label>
+      <select id="selG"></select>
+      <div class="ranked" id="games" style="margin-top:10px"></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ TABLES ============ -->
+<section class="block" id="tables"><div class="wrap">
+  <div class="eyebrow">Phase 2 · à concevoir</div>
+  <h2>Des tables pensées pour le jeu de rôle</h2>
+  <p class="lead">Une partie de jeu de rôle n'est pas une partie de jeu de société : un groupe se retrouve sur la durée. Les tables doivent suivre ce rythme.</p>
+
+  <div class="types">
+    <div class="card"><h3>Campagne</h3><p style="margin-top:4px">Table fixe, avec un nombre de places. Des joueurs peuvent entrer ou sortir en cours de route : la place libérée est proposée aux profils compatibles.</p></div>
+    <div class="card"><h3>One-shot</h3><p style="margin-top:4px">Une soirée, un scénario. Pratique pour découvrir un jeu, un maître de jeu ou d'autres joueurs avant de s'engager sur une campagne.</p></div>
+    <div class="card"><h3>Table qui se verrouille</h3><p style="margin-top:4px">Quand tous les participants sont disponibles au même créneau, la table se bloque toute seule et chacun est notifié.</p></div>
+  </div>
+
+  <div class="demo">
+    <h3 style="margin-bottom:4px">Démo : trouver un créneau commun</h3>
+    <p class="note" style="margin:0 0 10px">Cochez les disponibilités de chacun. Pour voir la table se verrouiller, essayez de cocher « Sam 20h » pour Joueur 1.</p>
+    <div style="overflow-x:auto"><table class="plan" id="plan"></table></div>
+    <div class="banner" id="lock"></div>
+  </div>
+</div></section>
+
+<!-- ============ FEUILLE DE ROUTE ============ -->
+<section class="block" id="route"><div class="wrap">
+  <div class="eyebrow">Feuille de route</div>
+  <h2>Deux étapes</h2>
+  <div class="road">
+    <div class="card">
+      <h3>Phase 1 · Profils et affinités <span class="tag done">maquette prête</span></h3>
+      <ul>
+        <li>Fiche de joueur et fiche de maître de jeu</li>
+        <li>Univers : 32 catégories, niveaux de 1 à 5, questionnaire guidé</li>
+        <li>Recensement des joueurs et des maîtres de jeu</li>
+        <li>Affinités joueur ↔ joueur et joueur ↔ maître de jeu, en pourcentage</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Phase 2 · Jeux et tables <span class="tag">à concevoir</span></h3>
+      <ul>
+        <li>Base de jeux de rôle, décrits avec les mêmes catégories</li>
+        <li>Les maîtres de jeu déclarent les jeux qu'ils proposent</li>
+        <li>Suggestions de jeux et de maîtres de jeu selon le profil</li>
+        <li>Tables de campagne et one-shots</li>
+        <li>Créneaux communs, verrouillage automatique, notifications</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ QUESTIONS ============ -->
+<section class="block" id="questions"><div class="wrap">
+  <div class="eyebrow">Votre avis</div>
+  <h2>Ce qu'on aimerait savoir de vous</h2>
+  <p class="lead">Après avoir ouvert les deux fiches, quelques questions pour orienter la suite.</p>
+  <ul class="qs">
+    <li><b>La fiche vous ressemble-t-elle ?</b><span>Y a-t-il des caractéristiques, des curseurs ou des univers qui manquent, ou qui vous semblent de trop ?</span></li>
+    <li><b>Le pourcentage d'affinité vous paraît-il crédible ?</b><span>Sur quels critères voudriez-vous qu'on rapproche deux joueurs, ou un joueur et un maître de jeu ?</span></li>
+    <li><b>Qu'attendez-vous d'une base de jeux de rôle ?</b><span>Quelles informations seraient utiles sur chaque jeu pour choisir une table ?</span></li>
+    <li><b>Comment gérez-vous vos tables aujourd'hui ?</b><span>Quelles galères voudriez-vous voir disparaître : trouver des joueurs, s'accorder sur une date, remplacer quelqu'un ?</span></li>
+    <li><b>Quelles données seriez-vous prêt à rendre visibles ?</b><span>Un profil contient des préférences personnelles, y compris des lignes rouges. Qui devrait pouvoir les voir, et à quel moment ?</span></li>
+  </ul>
+</div></section>
+</main>
+
+<footer><div class="wrap">Maquette de démonstration. Profils, jeux et créneaux d'exemple fictifs ; les fiches enregistrent vos réponses uniquement dans votre navigateur.</div></footer>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+const LABEL = {
+  haute:"Haute fantasy", epee:"Épée et sorcellerie", mythes:"Mythes et légendes", surnat:"Surnaturel moderne",
+  sf:"Science-fiction spatiale", cyber:"Cyberpunk", postapo:"Post-apocalyptique", hero:"Super-héros",
+  steam:"Steampunk", western:"Western", histo:"Historique", pulp:"Aventure pulp", polar:"Polar et enquête",
+  espion:"Espionnage", horreur:"Horreur", asie:"Asie et arts martiaux", cartoon:"Cartoon et animaux",
+  sombre:"Sombre", humour:"Humoristique", epique:"Épique et héroïque", mystere:"Mystérieux",
+  angoisse:"Angoissant", realiste:"Réaliste et brut", merveil:"Merveilleux",
+  politique:"Politique", religion:"Religion", guerre:"Guerre", sport:"Sport", survie:"Survie",
+  explo:"Exploration", romance:"Romance", psy:"Pouvoirs psychiques"
+};
+const MODE = {table:"Sur table", online:"En ligne", both:"Sur table et en ligne"};
+const LANG = {fr:"français", en:"anglais"};
+
+/* Curseurs communs aux joueurs et aux maîtres de jeu */
+const DIMS = [
+  ["cadre", "Cadre de jeu", "Narratif", "Mécanique"],
+  ["regles", "Rapport aux règles", "Souple", "À la lettre"],
+  ["controle", "Partage du contrôle", "Cadré par le MJ", "Co-création"]
+];
+
+/* Profils d'exemple (fictifs). Niveaux 1 à 5, "x" = à éviter. */
+const PLAYERS = [
+  {name:"Profil « Conteur »", style:{cadre:1, regles:2, controle:5}, mode:"both", lang:["fr"],
+   uni:{haute:5, mythes:4, merveil:5, epique:4, explo:3, romance:3, horreur:"x", angoisse:"x"}},
+  {name:"Profil « Stratège »", style:{cadre:5, regles:5, controle:2}, mode:"table", lang:["fr","en"],
+   uni:{epee:4, sf:5, cyber:4, histo:3, guerre:4, survie:3}},
+  {name:"Profil « Enquêteur »", style:{cadre:3, regles:3, controle:3}, mode:"online", lang:["fr"],
+   uni:{polar:5, espion:4, mystere:5, surnat:3, horreur:2, sombre:3, politique:4}}
+];
+const GMS = [
+  {name:"MJ « Conteur »", style:{cadre:1, regles:2, controle:4}, mode:"both", lang:["fr"],
+   uni:{haute:5, mythes:4, merveil:4, epique:5, explo:4, horreur:"x"}},
+  {name:"MJ « Arbitre »", style:{cadre:5, regles:5, controle:1}, mode:"table", lang:["fr"],
+   uni:{epee:4, sf:4, cyber:5, histo:3, guerre:3, survie:4}},
+  {name:"MJ « Mystère »", style:{cadre:3, regles:3, controle:3}, mode:"online", lang:["fr","en"],
+   uni:{polar:5, espion:3, horreur:4, mystere:5, surnat:4, angoisse:4, sombre:4}}
+];
+const GAMES = [
+  {name:"Les Marches d'Argent", gm:0, style:{cadre:2, regles:2, controle:4}, uni:{haute:5, mythes:4, merveil:3, epique:4}, note:"Fantasy narrative"},
+  {name:"Neon Protocol", gm:1, style:{cadre:4, regles:5, controle:2}, uni:{cyber:5, sf:3, sombre:4, espion:3, survie:2}, note:"Cyberpunk à règles précises"},
+  {name:"Brume sur Port-Corbeau", gm:2, style:{cadre:3, regles:3, controle:3}, uni:{polar:4, horreur:5, mystere:5, surnat:4, angoisse:4}, note:"Enquête et horreur"}
+];
+
+function affinity(a, b){
+  const sim = DIMS.map(([k]) => 1 - Math.abs(a.style[k] - b.style[k]) / 4);
+  const style = sim.reduce((s, x) => s + x, 0) / sim.length;
+  const ids = new Set([...Object.keys(a.uni), ...Object.keys(b.uni)]);
+  let dot = 0, na = 0, nb = 0;
+  const shared = [], conf = [];
+  ids.forEach(id => {
+    const x = a.uni[id], y = b.uni[id];
+    const xn = typeof x === "number" ? x : 0, yn = typeof y === "number" ? y : 0;
+    dot += xn * yn; na += xn * xn; nb += yn * yn;
+    if (xn >= 3 && yn >= 3) shared.push([id, Math.min(xn, yn)]);
+    if ((x === "x" && yn >= 3) || (y === "x" && xn >= 3)) conf.push(id);
+  });
+  const cos = na && nb ? dot / Math.sqrt(na * nb) : 0;
+  const uni = Math.max(0, cos - 0.2 * conf.length);
+  const modeOk = !a.mode || !b.mode || a.mode === "both" || b.mode === "both" || a.mode === b.mode;
+  const langOk = !a.lang || !b.lang || a.lang.some(l => b.lang.includes(l));
+  return {
+    style, uni, global: 0.45 * style + 0.55 * uni, sim,
+    shared: shared.sort((p, q) => q[1] - p[1]), conf, modeOk, langOk, possible: modeOk && langOk
+  };
+}
+const pct = x => Math.round(x * 100);
+
+/* ---- démo d'affinité ---- */
+let selP = 0, selM = 0;
+$("selP").innerHTML = PLAYERS.map((p, i) => `<option value="${i}">${esc(p.name)}</option>`).join("");
+$("selM").innerHTML = GMS.map((p, i) => `<option value="${i}">${esc(p.name)}</option>`).join("");
+$("selG").innerHTML = PLAYERS.map((p, i) => `<option value="${i}">${esc(p.name)}</option>`).join("");
+
+function track(p, g, [k, label, left, right]){
+  const pos = v => ((v - 1) / 4) * 100;
+  return `<div class="dim"><div class="row"><span>${label}</span></div>
+    <div class="track"><i class="p" style="left:${pos(p.style[k])}%"></i><i class="g" style="left:${pos(g.style[k])}%"></i></div>
+    <div class="poles"><span>${left}</span><span>${right}</span></div></div>`;
+}
+function renderResult(){
+  const p = PLAYERS[selP], g = GMS[selM], r = affinity(p, g);
+  const chips = r.shared.length ? r.shared.slice(0, 6).map(([id]) => `<span class="chip">${LABEL[id]}</span>`).join("") : '<span class="muted">Aucune catégorie en commun.</span>';
+  const friction = r.conf.length
+    ? `<div class="chips">${r.conf.map(id => `<span class="chip no">✗ ${LABEL[id]}</span>`).join("")}</div>`
+    : '<span class="muted">Aucune.</span>';
+  const why = [];
+  if (!r.modeOk) why.push(`mode de jeu incompatible (${MODE[p.mode].toLowerCase()} / ${MODE[g.mode].toLowerCase()})`);
+  if (!r.langOk) why.push("pas de langue commune");
+  const big = r.possible
+    ? `<div class="big"><b>${pct(r.global)} %</b><span>d'affinité</span></div>`
+    : `<div class="big off"><span>Affinité</span><b>Pas de table possible</b><span>${esc(why.join(", "))}</span></div>`;
+  $("result").innerHTML = `<div>${big}
+      <div class="flags">
+        <span class="flag ${r.modeOk ? "ok" : "ko"}">${r.modeOk ? "✓" : "✗"} Mode de jeu</span>
+        <span class="flag ${r.langOk ? "ok" : "ko"}">${r.langOk ? "✓" : "✗"} Langue</span>
+      </div></div>
+    <div>
+      <div class="legend"><span><i style="background:var(--pl)"></i>Joueur</span><span><i style="background:var(--gm)"></i>Maître de jeu</span></div>
+      ${DIMS.map(d => track(p, g, d)).join("")}
+      <div class="score"><span>Style de jeu</span><div class="bar"><i style="width:${pct(r.style)}%"></i></div><b>${pct(r.style)} %</b></div>
+      <div class="score"><span>Univers</span><div class="bar"><i style="width:${pct(r.uni)}%"></i></div><b>${pct(r.uni)} %</b></div>
+      <h3 style="font-size:.95rem;margin:14px 0 4px">En commun</h3><div class="chips" style="margin-top:0">${chips}</div>
+      <h3 style="font-size:.95rem;margin:14px 0 4px">Points de friction</h3>${friction}
+    </div>`;
+}
+function renderMatrix(){
+  let h = `<div style="overflow-x:auto"><table class="matrix"><thead><tr><th></th>${GMS.map(g => `<th>${esc(g.name)}</th>`).join("")}</tr></thead><tbody>`;
+  PLAYERS.forEach((p, i) => {
+    h += `<tr><td>${esc(p.name)}</td>`;
+    GMS.forEach((g, j) => {
+      const r = affinity(p, g);
+      const v = pct(r.global);
+      const style = r.possible ? `style="background:color-mix(in srgb, var(--gm) ${Math.round(v * 0.5)}%, var(--card))"` : "";
+      h += `<td><button type="button" data-p="${i}" data-m="${j}" class="${r.possible ? "" : "na"}${i === selP && j === selM ? " sel" : ""}" ${style} aria-label="${esc(p.name)} avec ${esc(g.name)}">${r.possible ? v + " %" : "—"}</button></td>`;
+    });
+    h += "</tr>";
+  });
+  $("matrix").innerHTML = h + "</tbody></table></div>";
+}
+function refreshDemo(){
+  $("selP").value = selP; $("selM").value = selM;
+  renderResult(); renderMatrix();
+}
+$("selP").addEventListener("change", e => { selP = +e.target.value; refreshDemo(); });
+$("selM").addEventListener("change", e => { selM = +e.target.value; refreshDemo(); });
+$("matrix").addEventListener("click", e => {
+  const b = e.target.closest("button[data-p]");
+  if (!b) return;
+  selP = +b.dataset.p; selM = +b.dataset.m; refreshDemo();
+});
+
+/* ---- jeux suggérés ---- */
+function renderGames(){
+  const p = PLAYERS[+$("selG").value];
+  const list = GAMES.map(g => ({g, r: affinity(p, g), gm: GMS[g.gm]}))
+    .map(x => ({...x, ok: affinity(p, x.gm).possible}))
+    .sort((a, b) => b.r.global - a.r.global);
+  $("games").innerHTML = list.map(({g, r, gm, ok}) => `<div class="item">
+      <div><b>${esc(g.name)}</b><br><small>${esc(g.note)} · proposé par ${esc(gm.name)}${ok ? "" : " (incompatible : mode ou langue)"}</small></div>
+      <div class="pc">${pct(r.global)} %</div></div>`).join("");
+}
+$("selG").addEventListener("change", renderGames);
+
+/* ---- planning ---- */
+const SLOTS = ["Jeu 19h", "Ven 20h", "Sam 14h", "Sam 20h", "Dim 15h"];
+const PEOPLE = [
+  ["MJ", [1, 1, 0, 1, 1]],
+  ["Joueur 1", [1, 1, 1, 0, 1]],
+  ["Joueur 2", [0, 1, 1, 1, 1]],
+  ["Joueur 3", [1, 0, 1, 1, 1]],
+  ["Joueur 4", [0, 1, 0, 1, 0]]
+];
+$("plan").innerHTML =
+  `<thead><tr><th></th>${SLOTS.map(s => `<th>${s}</th>`).join("")}</tr></thead><tbody>` +
+  PEOPLE.map(([n, av], i) => `<tr><td>${n}</td>${av.map((v, j) => `<td><input type="checkbox" data-r="${i}" data-c="${j}" aria-label="${n}, ${SLOTS[j]}" ${v ? "checked" : ""}></td>`).join("")}</tr>`).join("") +
+  `</tbody><tfoot><tr><td>Disponibles</td>${SLOTS.map((s, j) => `<td id="cnt${j}"></td>`).join("")}</tr></tfoot>`;
+
+function refreshPlan(){
+  const boxes = [...document.querySelectorAll("#plan input")];
+  const full = [];
+  SLOTS.forEach((s, j) => {
+    const col = boxes.filter(b => +b.dataset.c === j);
+    const n = col.filter(b => b.checked).length;
+    $("cnt" + j).textContent = n + " / " + PEOPLE.length;
+    const all = n === PEOPLE.length;
+    if (all) full.push(s);
+    col.forEach(b => b.parentElement.classList.toggle("full", all));
+    $("cnt" + j).classList.toggle("full", all);
+  });
+  const box = $("lock");
+  if (full.length){
+    box.className = "banner locked";
+    box.innerHTML = `<b>✓ Créneau commun trouvé : ${full[0]}.</b> La table se verrouille.
+      <ul><li>🔔 Notification aux ${PEOPLE.length} participants : « Votre table se réunit ${full[0]}. »</li>
+      <li>🔔 Rappel automatique avant chaque séance</li>
+      <li>Les places restantes ne sont plus proposées aux autres joueurs</li></ul>`;
+  } else {
+    box.className = "banner";
+    box.innerHTML = "<b>Table en recherche d'un créneau.</b> Aucun créneau n'arrange encore tout le monde : l'application attend les disponibilités manquantes.";
+  }
+}
+$("plan").addEventListener("change", refreshPlan);
+
+refreshDemo();
+renderGames();
+refreshPlan();
+</script>
+</body>
+</html>
