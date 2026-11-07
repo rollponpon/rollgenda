@@ -94,6 +94,8 @@ details.guide summary{cursor:pointer;font-weight:600;color:var(--accent)}
 .parts div{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:.92rem}
 .envtitle{margin:12px 0 4px;font-size:.9rem;color:var(--accent)}
 .actions{margin-top:12px}
+.lvl{color:var(--accent);font-weight:600}
+.anchor{color:var(--muted);font-style:italic}
 a.back{font:inherit;padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);text-decoration:none}
 @media print{
   :root{--bg:#fff;--card:#fff;--ink:#000;--muted:#444;--accent:#000;--accent-ink:#fff;--line:#999;--soft:#eee;--avoid:#000}
@@ -142,14 +144,22 @@ a.back{font:inherit;padding:8px 14px;border-radius:8px;border:1px solid var(--li
 
   <section>
     <h2>Caractéristiques</h2>
-    <p class="hint">Ce que je sais faire. 1 = point faible, 3 = correct, 5 = point fort. Soyez honnête : un profil équilibré est un bon profil.</p>
+    <p class="hint">Ce que je sais faire, de 1 (je découvre) à 5 (mon point fort). Une note basse ne dit pas qu'on est mauvais : elle dit où l'on en est, ou ce qu'on laisse volontiers aux autres. Un profil équilibré est un bon profil.</p>
+    <details class="guide" id="duelBox">
+      <summary>M'aider à me situer : quelques comparaisons</summary>
+      <p class="hint" style="margin-top:8px">Comparer deux choses est plus facile que se noter dans l'absolu. Pour chaque question, choisissez ce qui vous ressemble le plus. Le résultat est relatif : il compare vos forces entre elles, il ne dit jamais qu'une qualité est mauvaise. Vous pourrez ensuite ajuster chaque niveau.</p>
+      <div id="duels"></div>
+      <div class="suggest" id="duelResult"></div>
+      <button type="button" class="primary" id="applyDuels">Utiliser ces niveaux</button>
+      <span class="hint" id="duelNote"></span>
+    </details>
     <div id="stats"></div>
     <div class="total" id="statTotal"></div>
   </section>
 
   <section>
     <h2>Compétences</h2>
-    <p class="hint">0 = pas mon truc · 1 = novice · 2 = à l'aise · 3 = ma spécialité.</p>
+    <p class="hint">De 0 (je laisse volontiers la main) à 3 (ma spécialité). Laisser la main est un choix, pas un échec.</p>
     <div id="skills"></div>
   </section>
 
@@ -161,7 +171,7 @@ a.back{font:inherit;padding:8px 14px;border-radius:8px;border:1px solid var(--li
 
   <section>
     <h2>Jauges</h2>
-    <p class="hint">Mon énergie à la table. 1 = vite à plat, 5 = inépuisable.</p>
+    <p class="hint">Mon énergie à la table : de 1 (je me ménage, séances courtes) à 5 (inépuisable).</p>
     <div id="gauges"></div>
     <div class="grid2" style="margin-top:8px">
       <label class="field">Durée de session idéale<select id="duration">
@@ -175,13 +185,13 @@ a.back{font:inherit;padding:8px 14px;border-radius:8px;border:1px solid var(--li
 
   <section>
     <h2>Traits</h2>
-    <p class="hint">Comment je me comporte à la table. Cochez environ 3 avantages et 2 désavantages, et ajoutez les vôtres.</p>
-    <h3>Avantages <span class="hint" id="advCount"></span></h3>
+    <p class="hint">Comment je me comporte à la table. Cochez environ 3 atouts et 2 petits travers, et ajoutez les vôtres : un travers est aussi une couleur de jeu.</p>
+    <h3>Mes atouts <span class="hint" id="advCount"></span></h3>
     <div class="chips" id="advantages"></div>
-    <label class="field" style="margin-top:8px">Autre avantage<input type="text" id="advOther"></label>
-    <h3>Désavantages <span class="hint" id="disCount"></span></h3>
+    <label class="field" style="margin-top:8px">Autre atout<input type="text" id="advOther"></label>
+    <h3>Mes petits travers <span class="hint" id="disCount"></span></h3>
     <div class="chips" id="drawbacks"></div>
-    <label class="field" style="margin-top:8px">Autre désavantage<input type="text" id="disOther"></label>
+    <label class="field" style="margin-top:8px">Autre petit travers<input type="text" id="disOther"></label>
   </section>
 
   <section>
@@ -319,8 +329,72 @@ function chips(list, prefix){
   return list.map((t,i) => `<input type="checkbox" id="${prefix}${i}"><label for="${prefix}${i}">${t}</label>`).join("");
 }
 
-$("stats").innerHTML = rows(STATS, "stat_", 1, 5);
-$("skills").innerHTML = rows(SKILLS, "skill_", 0, 3) +
+const DUELS = [["imagination", "ecoute"], ["interpretation", "cooperation"], ["improvisation", "audace"], ["imagination", "interpretation"], ["ecoute", "cooperation"], ["improvisation", "imagination"], ["audace", "interpretation"], ["ecoute", "improvisation"], ["cooperation", "audace"], ["imagination", "audace"]];
+const STAT_ANCHORS = {
+  imagination: ["je trouve des idées quand on me les demande", "j'invente lieux, personnages et rebondissements sans effort"],
+  interpretation: ["je prends une voix ou une attitude pour les scènes importantes", "on me reconnaît à mes personnages, scène après scène"],
+  ecoute: ["je retiens l'essentiel de ce qui se dit", "je me souviens des détails et je rebondis sur ce que disent les autres"],
+  cooperation: ["je laisse la parole circuler", "je fais exister les personnages des autres et le groupe avance ensemble"],
+  improvisation: ["je rebondis quand le MJ me surprend", "mes improvisations marquent la table"],
+  audace: ["je tente parfois un coup risqué", "je prends volontiers le risque qui rend la scène mémorable"]
+};
+const STAT_LEVELS = {1: "Je découvre", 2: "Je progresse", 3: "À l'aise", 4: "Solide", 5: "Mon point fort"};
+const SKILL_LEVELS = {0: "Je laisse volontiers la main", 1: "Je débute", 2: "À l'aise", 3: "Ma spécialité"};
+function ratedRows(list, prefix, from, to, anchors){
+  return list.map(([k, t, d]) => {
+    const anchor = anchors && anchors[k]
+      ? `<small class="anchor">Repères : 3 = ${anchors[k][0]} · 5 = ${anchors[k][1]}</small>` : "";
+    return `<div class="row"><div class="lab"><strong>${t}</strong><small>${d}</small>${anchor}<small class="lvl" id="lvl_${prefix}${k}"></small></div>${scale(prefix + k, from, to)}</div>`;
+  }).join("");
+}
+
+/* comparaisons : chaque duel oppose deux caractéristiques */
+const statLabel = k => STATS.find(s => s[0] === k)[1];
+$("duels").innerHTML = DUELS.map(([a, b], i) =>
+  `<div class="qz"><p>${i + 1}. Qu'est-ce qui vous ressemble le plus ?</p><div class="chips">` +
+  `<input type="radio" name="duel_${i}" id="duel_${i}_a" value="a"><label for="duel_${i}_a">${statLabel(a)}</label>` +
+  `<input type="radio" name="duel_${i}" id="duel_${i}_eq" value="eq"><label for="duel_${i}_eq">Autant l'un que l'autre</label>` +
+  `<input type="radio" name="duel_${i}" id="duel_${i}_b" value="b"><label for="duel_${i}_b">${statLabel(b)}</label>` +
+  "</div></div>").join("");
+/* Niveaux de 2 à 5 : une comparaison est relative, elle ne produit donc jamais de « 1 ». */
+function duelLevels(){
+  const score = {}, seen = {};
+  STATS.forEach(([k]) => { score[k] = 0; seen[k] = 0; });
+  let answered = 0;
+  DUELS.forEach(([a, b], i) => {
+    const picked = document.querySelector(`input[name="duel_${i}"]:checked`);
+    if (!picked) return;
+    answered++;
+    seen[a]++; seen[b]++;
+    if (picked.value === "a") score[a] += 1;
+    else if (picked.value === "b") score[b] += 1;
+    else { score[a] += 0.5; score[b] += 0.5; }
+  });
+  const keys = STATS.map(s => s[0]).filter(k => seen[k] > 0);
+  const ratio = Object.fromEntries(keys.map(k => [k, score[k] / seen[k]]));
+  const values = Object.values(ratio);
+  const low = Math.min(...values), high = Math.max(...values);
+  const levels = {};
+  keys.forEach(k => { levels[k] = high === low ? 3 : 2 + Math.round(3 * (ratio[k] - low) / (high - low)); });
+  return {levels, answered};
+}
+function refreshDuels(){
+  const {levels, answered} = duelLevels();
+  const keys = Object.keys(levels);
+  $("applyDuels").disabled = keys.length === 0;
+  $("duelResult").innerHTML = keys.length
+    ? `<p><b>Niveaux proposés</b> (${answered}/${DUELS.length} réponses) :</p><p>` +
+      keys.sort((a, b) => levels[b] - levels[a]).map(k => `<span class="lv"><b>${levels[k]}</b>${statLabel(k)}</span>`).join("") + "</p>"
+    : "Répondez à quelques comparaisons : les niveaux proposés apparaîtront ici.";
+}
+$("applyDuels").addEventListener("click", () => {
+  const {levels} = duelLevels();
+  Object.entries(levels).forEach(([k, level]) => { $(`stat_${k}_${level}`).checked = true; });
+  $("duelNote").textContent = " Niveaux appliqués : ajustez-les librement ci-dessous.";
+  refresh(); save();
+});
+$("stats").innerHTML = ratedRows(STATS, "stat_", 1, 5, STAT_ANCHORS);
+$("skills").innerHTML = ratedRows(SKILLS, "skill_", 0, 3) +
   `<div class="row"><div class="lab"><input type="text" id="skillCustomName" placeholder="Autre compétence…"></div>${scale("skill_custom", 0, 3)}</div>`;
 $("gauges").innerHTML = rows(GAUGES, "gauge_", 1, 5);
 /* curseurs : certains décrivent le caractère (fixe), d'autres l'humeur du moment (mobile) */
@@ -581,11 +655,14 @@ function count(prefix, n){
   return c;
 }
 function refresh(){
-  let sum = 0, filled = 0;
-  STATS.forEach(([k]) => { const v = val("stat_" + k); if (v){ sum += v; filled++; } });
-  $("statTotal").innerHTML = filled
-    ? `Total : <b>${sum}</b> sur ${STATS.length * 5} (moyenne ${(sum / filled).toFixed(1)}), ${filled}/${STATS.length} remplies.`
-    : "";
+  STATS.forEach(([k]) => { const v = val("stat_" + k); $("lvl_stat_" + k).textContent = v ? STAT_LEVELS[v] : ""; });
+  SKILLS.forEach(([k]) => { const v = val("skill_" + k); $("lvl_skill_" + k).textContent = v !== null ? SKILL_LEVELS[v] : ""; });
+  const strengths = [
+    ...STATS.filter(([k]) => (val("stat_" + k) || 0) >= 4).map(s => s[1]),
+    ...SKILLS.filter(([k]) => val("skill_" + k) === 3).map(s => s[1])
+  ];
+  $("statTotal").innerHTML = strengths.length ? `Mes points forts : <b>${strengths.join(", ")}</b>.` : "";
+  refreshDuels();
   $("advCount").textContent = `(${count("adv", ADV.length)} cochés)`;
   $("disCount").textContent = `(${count("dis", DIS.length)} cochés)`;
   $("envCount").textContent = `(${document.querySelectorAll("#envies input:checked").length}/${MAX_ENVIES})`;
