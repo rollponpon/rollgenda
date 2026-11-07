@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jeux de rôle : classification à relire</title>
+<style>
+:root{--bg:#f5f2ec;--card:#fff;--ink:#23262a;--muted:#68717a;--line:#dcd7cd;--soft:#ece8df;--acc:#8a3b2a;--on:#fff;--uni:#2f5d6b;--amb:#8a3b2a;--thm:#5b6b2e}
+@media (prefers-color-scheme:dark){:root{--bg:#16181a;--card:#202326;--ink:#ebe8e2;--muted:#9aa3aa;--line:#363b40;--soft:#292d31;--acc:#e08a6f;--on:#16181a;--uni:#7fc0d1;--amb:#e08a6f;--thm:#b4c97a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px}
+a{color:inherit}
+h1,h2{font-family:Georgia,"Times New Roman",serif;line-height:1.2;margin:0}
+h1{font-size:2rem;margin:20px 0 8px}
+h2{font-size:1.15rem;margin-bottom:6px}
+.lead{color:var(--muted);max-width:70ch;margin:0 0 18px}
+.back{display:inline-block;margin-top:16px;color:var(--muted);text-decoration:none;font-size:.9rem}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+@media (max-width:900px){.cards{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.cards{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:.92rem}
+.card p{margin:4px 0}
+.card .muted{color:var(--muted)}
+.scale{list-style:none;margin:6px 0 0;padding:0}
+.scale li{display:flex;gap:8px;padding:2px 0}
+.scale b{min-width:1.2em}
+.axes{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:8px;font-size:.82rem;color:var(--muted)}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px}
+.tools{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(6px);padding:10px 0;display:flex;flex-wrap:wrap;gap:8px;align-items:center;border-bottom:1px solid var(--line)}
+input[type=search],select,input[type=text],textarea{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+input[type=search]{flex:1;min-width:180px}
+button{font:inherit;padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+button.primary{background:var(--acc);color:var(--on);border-color:var(--acc);font-weight:600}
+.count{color:var(--muted);font-size:.88rem;margin-left:auto}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:12px}
+th,td{padding:8px 10px;text-align:left;vertical-align:top;border-top:1px solid var(--line);font-size:.92rem}
+thead th{border-top:0;background:var(--soft);font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+td.game{font-weight:600;min-width:180px}
+td.style{white-space:nowrap}
+.bar{display:inline-flex;gap:2px;vertical-align:middle;margin-right:6px}
+.bar i{width:9px;height:14px;border-radius:2px;background:var(--soft);border:1px solid var(--line)}
+.bar i.on{background:var(--acc);border-color:var(--acc)}
+.chips{display:flex;flex-wrap:wrap;gap:4px}
+.chip{font-size:.78rem;padding:1px 8px;border-radius:99px;border:1px solid var(--line);background:var(--soft);white-space:nowrap}
+.chip b{font-weight:700;margin-left:3px}
+.chip.uni{border-color:var(--uni)}
+.chip.amb{border-color:var(--amb)}
+.chip.thm{border-color:var(--thm)}
+.chip.low{opacity:.65}
+td.mine{min-width:210px}
+td.mine select{width:78px;padding:4px 6px}
+td.mine input{width:100%;margin-top:4px;padding:4px 8px;font-size:.85rem}
+.empty{padding:24px;text-align:center;color:var(--muted)}
+.feedback{margin:22px 0 40px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.feedback textarea{width:100%;min-height:80px;margin:6px 0}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+#result{min-height:120px;font-size:.85rem}
+.note{font-size:.82rem;color:var(--muted)}
+@media (max-width:720px){
+  thead{display:none}
+  table,tbody,tr,td{display:block;width:100%}
+  tr{padding:8px 4px;border-top:1px solid var(--line)}
+  td{border:0;padding:3px 10px}
+  td.mine{min-width:0}
+  td.mine select{width:auto}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← Retour à la présentation</a>
+  <h1>Jeux de rôle : une première classification à relire</h1>
+  <p class="lead">Ce tableau est un <b>brouillon établi par une IA</b> à partir des descriptions publiques de 98 jeux. Il contient sûrement des erreurs : vous connaissez ces jeux, alors dites-nous ce qui vous semble faux. Une ligne correspond à un système de règles (en général son édition actuelle).</p>
+
+  <div class="cards">
+    <div class="card">
+      <h2>Le style, de 1 à 5</h2>
+      <p class="muted">La place que prennent les règles dans le jeu. Ce n'est ni une note de qualité, ni la difficulté pour apprendre.</p>
+      <ul class="scale">
+        <li><b>1</b><span>très narratif, règles quasi absentes (Fiasco, Toon)</span></li>
+        <li><b>3</b><span>équilibré (L'Appel de Cthulhu)</span></li>
+        <li><b>4</b><span>plutôt mécanique (RuneQuest)</span></li>
+        <li><b>5</b><span>très mécanique (Rolemaster)</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Les catégories</h2>
+      <p class="muted">32 catégories en trois axes. Le chiffre dit à quel point la catégorie est centrale pour le jeu : 5 la définit, 1 est présente.</p>
+      <div class="axes">
+        <span><i class="dot" style="background:var(--uni)"></i>Univers</span>
+        <span><i class="dot" style="background:var(--amb)"></i>Ambiance</span>
+        <span><i class="dot" style="background:var(--thm)"></i>Thèmes</span>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Systèmes génériques</h2>
+      <p class="muted">Non listés, car ils n'ont pas d'univers propre : Basic Roleplaying, Fate, GURPS, Savage Worlds, Genesys. Ils servent de base à d'autres jeux, par exemple Basic Roleplaying pour L'Appel de Cthulhu et RuneQuest.</p>
+    </div>
+    <div class="card">
+      <h2>Ce que l'on vous demande</h2>
+      <p class="muted">Relire les jeux que vous connaissez. Corrigez le style avec la liste « Mon avis » ou ajoutez une remarque sur les catégories. Signalez aussi les jeux qui manquent. Puis cliquez sur « Copier mes retours » en bas de page.</p>
+    </div>
+  </div>
+
+  <div class="tools">
+    <input type="search" id="q" placeholder="Chercher un jeu…" aria-label="Chercher un jeu">
+    <select id="cat" aria-label="Filtrer par catégorie"></select>
+    <select id="sort" aria-label="Trier">
+      <option value="name">Trier par nom</option>
+      <option value="styleAsc">Du plus narratif au plus mécanique</option>
+      <option value="styleDesc">Du plus mécanique au plus narratif</option>
+    </select>
+    <span class="count" id="count"></span>
+  </div>
+
+  <table>
+    <thead><tr><th>Jeu</th><th>Style</th><th>Catégories</th><th>Mon avis</th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <div class="empty" id="empty" hidden>Aucun jeu ne correspond.</div>
+
+  <section class="feedback" id="feedback">
+    <h2>Mes retours</h2>
+    <p class="note">Rien n'est envoyé automatiquement : vos réponses restent dans votre navigateur. Cliquez sur « Copier mes retours », puis collez le texte dans votre message à la personne qui vous a partagé cette page.</p>
+    <div class="row"><label for="who">Votre prénom ou pseudo (facultatif)</label><input type="text" id="who"></div>
+    <label for="general">Jeux qui manquent, remarques générales</label>
+    <textarea id="general" placeholder="Par exemple : il manque tel jeu ; telle édition devrait être séparée…"></textarea>
+    <div class="row">
+      <button class="primary" type="button" id="copy">Copier mes retours</button>
+      <button type="button" id="reset">Tout effacer</button>
+      <span class="note" id="status"></span>
+    </div>
+    <textarea id="result" readonly aria-label="Texte à copier" placeholder="Votre texte apparaîtra ici."></textarea>
+  </section>
+</div>
+
+<script>
+const LABELS = {"haute": {"label": "Haute fantasy", "axis": "univers"}, "epee": {"label": "Épée et sorcellerie", "axis": "univers"}, "mythes": {"label": "Mythes et légendes", "axis": "univers"}, "surnat": {"label": "Surnaturel moderne", "axis": "univers"}, "sf": {"label": "Science-fiction spatiale", "axis": "univers"}, "cyber": {"label": "Cyberpunk", "axis": "univers"}, "postapo": {"label": "Post-apocalyptique", "axis": "univers"}, "hero": {"label": "Super-héros", "axis": "univers"}, "steam": {"label": "Steampunk et ère victorienne", "axis": "univers"}, "western": {"label": "Western", "axis": "univers"}, "histo": {"label": "Historique", "axis": "univers"}, "pulp": {"label": "Aventure pulp et cape et d'épée", "axis": "univers"}, "polar": {"label": "Polar et enquête", "axis": "univers"}, "espion": {"label": "Espionnage et conspirations", "axis": "univers"}, "horreur": {"label": "Horreur", "axis": "univers"}, "asie": {"label": "Asie, arts martiaux et manga", "axis": "univers"}, "cartoon": {"label": "Cartoon, animaux et enfance", "axis": "univers"}, "sombre": {"label": "Sombre", "axis": "ambiance"}, "humour": {"label": "Humoristique ou satirique", "axis": "ambiance"}, "epique": {"label": "Épique et héroïque", "axis": "ambiance"}, "mystere": {"label": "Mystérieux", "axis": "ambiance"}, "angoisse": {"label": "Angoissant", "axis": "ambiance"}, "realiste": {"label": "Réaliste et brut", "axis": "ambiance"}, "merveil": {"label": "Merveilleux et poétique", "axis": "ambiance"}, "politique": {"label": "Politique et pouvoir", "axis": "theme"}, "religion": {"label": "Religion et croyances", "axis": "theme"}, "guerre": {"label": "Guerre et conflits", "axis": "theme"}, "sport": {"label": "Sport et compétition", "axis": "theme"}, "survie": {"label": "Survie", "axis": "theme"}, "explo": {"label": "Exploration", "axis": "theme"}, "romance": {"label": "Romance", "axis": "theme"}, "psy": {"label": "Pouvoirs psychiques", "axis": "theme"}};
+const GAMES = [{"n": "13th Age", "s": 3.5, "c": [["haute", 5], ["epique", 3], ["politique", 2]]}, {"n": "7th Sea", "s": 3.0, "c": [["pulp", 5], ["epique", 3], ["politique", 3], ["histo", 1]]}, {"n": "Achtung! Cthulhu", "s": 3.0, "c": [["horreur", 4], ["histo", 4], ["guerre", 4], ["pulp", 4], ["espion", 3], ["angoisse", 3], ["epique", 2]]}, {"n": "Advanced Dungeons & Dragons (2nd Edition)", "s": 4.2, "c": [["haute", 5], ["epique", 3], ["explo", 3]]}, {"n": "ALIEN: The Roleplaying Game: Evolved Edition", "s": 2.5, "c": [["sf", 5], ["horreur", 4], ["angoisse", 4], ["survie", 4], ["sombre", 3]]}, {"n": "Alternity", "s": 3.8, "c": [["sf", 5], ["explo", 3], ["guerre", 1]]}, {"n": "Apocalypse World", "s": 2.0, "c": [["postapo", 5], ["survie", 4], ["sombre", 4], ["angoisse", 2]]}, {"n": "Ars Magica (5th Edition)", "s": 3.0, "c": [["mythes", 4], ["histo", 4], ["merveil", 3], ["haute", 3], ["religion", 3], ["politique", 3]]}, {"n": "Basic Dungeons & Dragons", "s": 2.8, "c": [["haute", 5], ["explo", 4], ["epique", 2]]}, {"n": "Blades in the Dark", "s": 2.3, "c": [["sombre", 5], ["polar", 3], ["politique", 3], ["steam", 2], ["horreur", 2]]}, {"n": "Cairn", "s": 1.8, "c": [["explo", 5], ["epee", 4], ["sombre", 3], ["mythes", 2], ["horreur", 1]]}, {"n": "Call of Cthulhu (2nd - 6th Edition)", "s": 3.0, "c": [["horreur", 5], ["angoisse", 4], ["mystere", 4], ["polar", 3], ["histo", 3], ["surnat", 2]]}, {"n": "Call of Cthulhu (7th Edition)", "s": 2.8, "c": [["horreur", 5], ["angoisse", 4], ["mystere", 4], ["polar", 3], ["histo", 3], ["surnat", 2]]}, {"n": "Capharnaüm: The Tales of the Dragon-Marked", "s": 3.0, "c": [["haute", 4], ["epique", 4], ["mythes", 3], ["merveil", 3], ["asie", 2]]}, {"n": "Champions (Hero System 6)", "s": 5.0, "c": [["hero", 5], ["epique", 3]]}, {"n": "Changeling: The Dreaming", "s": 2.5, "c": [["merveil", 5], ["surnat", 5], ["mythes", 4], ["sombre", 2]]}, {"n": "Chroniques Oubliées Fantasy", "s": 3.0, "c": [["haute", 5], ["explo", 3], ["humour", 1]]}, {"n": "Coriolis", "s": 2.5, "c": [["sf", 5], ["religion", 3], ["politique", 3], ["explo", 3]]}, {"n": "Cyberpunk 2020", "s": 3.8, "c": [["cyber", 5], ["sombre", 4], ["realiste", 3]]}, {"n": "Cyberpunk RED", "s": 3.8, "c": [["cyber", 5], ["sombre", 4], ["realiste", 3], ["survie", 2]]}, {"n": "Daggerheart", "s": 2.5, "c": [["haute", 5], ["epique", 4], ["merveil", 3]]}, {"n": "Dark Heresy (2nd Edition)", "s": 4.0, "c": [["sf", 5], ["sombre", 5], ["religion", 4], ["guerre", 3], ["horreur", 3], ["politique", 3], ["polar", 2]]}, {"n": "Das Schwarze Auge (DSA) (5th Edition)", "s": 3.6, "c": [["haute", 5], ["epique", 3], ["explo", 3], ["mythes", 3], ["merveil", 2]]}, {"n": "Deadlands: Reloaded", "s": 2.8, "c": [["western", 5], ["horreur", 4], ["surnat", 4], ["sombre", 3], ["pulp", 2]]}, {"n": "Delta Green: The Role-Playing Game", "s": 3.0, "c": [["horreur", 5], ["espion", 5], ["angoisse", 5], ["sombre", 5], ["mystere", 4], ["realiste", 4], ["polar", 3], ["surnat", 3]]}, {"n": "Doctor Who: The Roleplaying Game Second Edition", "s": 2.8, "c": [["sf", 4], ["explo", 4], ["mystere", 2], ["pulp", 2], ["humour", 2], ["epique", 2]]}, {"n": "Dragonbane", "s": 2.8, "c": [["haute", 5], ["epique", 3], ["explo", 3], ["mythes", 2]]}, {"n": "Dungeon Crawl Classics Role Playing Game", "s": 3.3, "c": [["epee", 5], ["explo", 4], ["haute", 3], ["sombre", 3], ["epique", 2], ["horreur", 1]]}, {"n": "Dungeon World", "s": 2.2, "c": [["haute", 5], ["explo", 4], ["epique", 3]]}, {"n": "Dungeons & Dragons (3rd Edition)", "s": 4.4, "c": [["haute", 5], ["epique", 3], ["explo", 3]]}, {"n": "Dungeons & Dragons (4th Edition)", "s": 4.6, "c": [["haute", 5], ["epique", 4], ["guerre", 2], ["explo", 2]]}, {"n": "Dungeons & Dragons (5th Edition)", "s": 3.5, "c": [["haute", 5], ["epique", 4], ["explo", 3]]}, {"n": "Earthdawn (Classic Edition)", "s": 3.6, "c": [["haute", 5], ["epique", 4], ["postapo", 2], ["horreur", 2], ["mythes", 2]]}, {"n": "Exalted (Third Edition)", "s": 3.8, "c": [["mythes", 5], ["epique", 5], ["haute", 3], ["asie", 3], ["politique", 3], ["merveil", 2]]}, {"n": "Fading Suns (Revised)", "s": 3.0, "c": [["sf", 5], ["sombre", 4], ["religion", 4], ["politique", 4], ["epique", 1]]}, {"n": "Fiasco", "s": 1.0, "c": [["humour", 4], ["polar", 3], ["sombre", 3], ["realiste", 3], ["romance", 1]]}, {"n": "Gamma World Roleplaying Game (7th Edition)", "s": 3.0, "c": [["postapo", 5], ["humour", 4], ["survie", 3], ["sf", 2]]}, {"n": "Ghostbusters: A Frightfully Cheerful Roleplaying Game", "s": 1.8, "c": [["surnat", 5], ["humour", 5], ["horreur", 2]]}, {"n": "Hawkmoon", "s": 3.0, "c": [["epique", 5], ["guerre", 4], ["sf", 3], ["postapo", 3], ["politique", 3], ["mythes", 3], ["sombre", 3], ["haute", 2]]}, {"n": "Hunter: The Reckoning", "s": 2.5, "c": [["surnat", 5], ["horreur", 5], ["sombre", 4], ["survie", 2]]}, {"n": "In Nomine Satanis / Magna Veritas (4th Edition)", "s": 1.8, "c": [["surnat", 5], ["religion", 5], ["humour", 4], ["guerre", 2], ["sombre", 2]]}, {"n": "In Nomine Satanis / Magna Veritas (5th Edition)", "s": 2.6, "c": [["surnat", 5], ["religion", 5], ["humour", 3], ["guerre", 3], ["politique", 2]]}, {"n": "Ironsworn", "s": 1.8, "c": [["explo", 5], ["epee", 4], ["sombre", 4], ["epique", 3], ["mythes", 3], ["survie", 3]]}, {"n": "Kult (3rd Edition)", "s": 2.7, "c": [["horreur", 5], ["sombre", 5], ["angoisse", 5], ["surnat", 5], ["religion", 4], ["mystere", 3]]}, {"n": "Lancer", "s": 4.3, "c": [["sf", 5], ["guerre", 4], ["epique", 3], ["politique", 3], ["explo", 3]]}, {"n": "Legend of the Five Rings Roleplaying Game (5th Edition)", "s": 2.8, "c": [["asie", 5], ["politique", 5], ["epique", 3], ["mythes", 3], ["religion", 3], ["guerre", 3], ["horreur", 2], ["romance", 2]]}, {"n": "Les Ombres d'Esteren", "s": 3.0, "c": [["sombre", 5], ["horreur", 4], ["mythes", 4], ["realiste", 4], ["histo", 3], ["survie", 3], ["mystere", 3], ["epee", 3]]}, {"n": "Lord of the Rings Roleplaying Game", "s": 3.0, "c": [["haute", 5], ["mythes", 5], ["epique", 5], ["explo", 4]]}, {"n": "Mage: The Ascension", "s": 2.5, "c": [["surnat", 5], ["mystere", 3], ["mythes", 3], ["merveil", 3], ["politique", 3], ["sombre", 3], ["psy", 2], ["epique", 2], ["religion", 2]]}, {"n": "Marvel Super Heroes", "s": 2.0, "c": [["hero", 5], ["epique", 3]]}, {"n": "Masks: A New Generation", "s": 2.0, "c": [["hero", 5], ["romance", 3], ["epique", 2]]}, {"n": "Mausritter: Sword-and-Whiskers Role Playing", "s": 1.6, "c": [["cartoon", 5], ["merveil", 4], ["explo", 4], ["haute", 3], ["humour", 2]]}, {"n": "Middle-earth Role Playing (1st & 2nd Editions)", "s": 4.5, "c": [["haute", 5], ["mythes", 5], ["epique", 5], ["explo", 3]]}, {"n": "Monster of the Week", "s": 2.0, "c": [["surnat", 5], ["mystere", 4], ["horreur", 3], ["polar", 2], ["humour", 2]]}, {"n": "Mothership", "s": 2.2, "c": [["sf", 5], ["horreur", 5], ["angoisse", 4], ["survie", 4], ["sombre", 3], ["explo", 3]]}, {"n": "Mutants & Masterminds Fourth Edition", "s": 3.6, "c": [["hero", 5], ["epique", 3]]}, {"n": "MÖRK BORG", "s": 1.4, "c": [["epee", 5], ["sombre", 5], ["horreur", 4], ["postapo", 3], ["angoisse", 3], ["religion", 3]]}, {"n": "Numenera", "s": 2.5, "c": [["explo", 5], ["sf", 4], ["merveil", 4], ["mystere", 4], ["postapo", 3], ["haute", 2]]}, {"n": "Old-School Essentials Retro Adventure Game", "s": 2.4, "c": [["haute", 5], ["explo", 5], ["epee", 2], ["epique", 2]]}, {"n": "Over the Edge (3rd Edition)", "s": 1.5, "c": [["mystere", 5], ["espion", 4], ["humour", 3], ["sf", 2], ["politique", 2]]}, {"n": "Paranoia (Rebooted)", "s": 1.8, "c": [["humour", 5], ["sf", 4], ["sombre", 3], ["politique", 3], ["espion", 2], ["cyber", 2]]}, {"n": "Pathfinder Roleplaying Game (2nd Edition)", "s": 4.3, "c": [["haute", 5], ["epique", 4], ["explo", 3]]}, {"n": "Pendragon (1st–6th Editions)", "s": 2.8, "c": [["mythes", 5], ["epique", 5], ["histo", 4], ["politique", 4], ["religion", 3], ["romance", 3], ["merveil", 2]]}, {"n": "Polaris (French RPG, 3rd Edition)", "s": 2.5, "c": [["sf", 4], ["postapo", 4], ["survie", 3], ["politique", 3], ["sombre", 3], ["explo", 3]]}, {"n": "Rifts", "s": 4.0, "c": [["postapo", 5], ["sf", 4], ["haute", 4], ["surnat", 3], ["epique", 3], ["guerre", 2], ["horreur", 2]]}, {"n": "Rolemaster (3rd & 4th Editions)", "s": 5.0, "c": [["haute", 5], ["epique", 3]]}, {"n": "RuneQuest: Roleplaying in Glorantha", "s": 4.0, "c": [["mythes", 5], ["epique", 4], ["religion", 4], ["haute", 3], ["guerre", 3], ["politique", 3], ["merveil", 2]]}, {"n": "Ryuutama", "s": 2.2, "c": [["merveil", 5], ["explo", 5], ["haute", 3], ["survie", 3], ["asie", 3]]}, {"n": "Rêve de Dragon", "s": 2.8, "c": [["merveil", 5], ["mystere", 4], ["mythes", 3], ["haute", 3], ["sombre", 2]]}, {"n": "Scum and Villainy", "s": 2.3, "c": [["sf", 5], ["pulp", 4], ["polar", 3], ["politique", 3], ["sombre", 3], ["epique", 2]]}, {"n": "Shadow of the Demon Lord", "s": 2.8, "c": [["epee", 5], ["sombre", 5], ["horreur", 4], ["haute", 3], ["angoisse", 3], ["religion", 3], ["survie", 3]]}, {"n": "Shadowrun: Sixth World (6th Edition)", "s": 3.7, "c": [["cyber", 5], ["haute", 4], ["sombre", 4], ["politique", 3], ["espion", 3], ["surnat", 3]]}, {"n": "Star Trek Adventures", "s": 3.0, "c": [["sf", 5], ["explo", 5], ["politique", 3], ["epique", 3], ["mystere", 2]]}, {"n": "Star Wars: Edge of the Empire", "s": 2.6, "c": [["sf", 5], ["pulp", 3], ["explo", 3], ["survie", 3], ["epique", 3], ["guerre", 2], ["politique", 2]]}, {"n": "Starfinder Roleplaying Game (2nd Ed)", "s": 4.3, "c": [["sf", 5], ["epique", 4], ["haute", 3], ["explo", 3]]}, {"n": "Stormbringer (5th Edition)", "s": 3.0, "c": [["epee", 5], ["sombre", 4], ["mythes", 4], ["epique", 3], ["haute", 3], ["religion", 3]]}, {"n": "Symbaroum", "s": 3.0, "c": [["sombre", 5], ["explo", 5], ["epee", 4], ["horreur", 3], ["politique", 3], ["haute", 3], ["survie", 2], ["mythes", 2]]}, {"n": "Tales from the Loop", "s": 2.0, "c": [["sf", 4], ["mystere", 4], ["merveil", 3], ["cartoon", 2], ["explo", 2]]}, {"n": "The Black Hack (1st & 2nd Ed.)", "s": 1.6, "c": [["haute", 5], ["explo", 4], ["epee", 2]]}, {"n": "The One Ring (2nd Edition)", "s": 3.0, "c": [["haute", 5], ["mythes", 5], ["explo", 5], ["epique", 4], ["sombre", 3], ["merveil", 2], ["survie", 2]]}, {"n": "The World of Darkness", "s": 2.5, "c": [["surnat", 5], ["sombre", 5], ["horreur", 4], ["mystere", 3], ["angoisse", 3], ["realiste", 3]]}, {"n": "Tidal Blades The Roleplaying Game", "s": 2.5, "c": [["merveil", 5], ["explo", 4], ["sf", 3], ["haute", 3], ["humour", 2], ["epique", 2]]}, {"n": "Toon", "s": 1.2, "c": [["cartoon", 5], ["humour", 5]]}, {"n": "Torg", "s": 2.8, "c": [["epique", 5], ["guerre", 4], ["pulp", 4], ["sf", 3], ["haute", 3], ["horreur", 3], ["cyber", 3], ["explo", 2], ["surnat", 2]]}, {"n": "Trail of Cthulhu", "s": 2.4, "c": [["horreur", 5], ["mystere", 5], ["polar", 4], ["angoisse", 4], ["histo", 3], ["pulp", 3], ["surnat", 2]]}, {"n": "Traveller (Mongoose 2nd Edition)", "s": 3.5, "c": [["sf", 5], ["explo", 4], ["pulp", 2], ["politique", 2], ["guerre", 2]]}, {"n": "Troika!", "s": 1.8, "c": [["merveil", 5], ["humour", 4], ["explo", 4], ["haute", 3], ["mythes", 2], ["sf", 2]]}, {"n": "Tunnels & Trolls 8th (French) edition", "s": 1.8, "c": [["haute", 5], ["explo", 4], ["humour", 2]]}, {"n": "Twilight: 2000 (4th Edition)", "s": 3.0, "c": [["postapo", 5], ["guerre", 5], ["survie", 5], ["realiste", 5], ["sombre", 4], ["histo", 2]]}, {"n": "Unknown Armies (3rd Edition)", "s": 3.0, "c": [["surnat", 5], ["sombre", 4], ["mystere", 4], ["realiste", 3], ["espion", 2], ["psy", 1]]}, {"n": "Urban Shadows", "s": 2.0, "c": [["surnat", 5], ["politique", 5], ["sombre", 4], ["horreur", 2], ["polar", 2]]}, {"n": "Vaesen", "s": 2.4, "c": [["mythes", 5], ["mystere", 5], ["horreur", 4], ["histo", 4], ["polar", 3], ["sombre", 3], ["merveil", 2]]}, {"n": "Vampire: The Masquerade", "s": 2.5, "c": [["surnat", 5], ["sombre", 5], ["politique", 5], ["horreur", 4], ["angoisse", 2], ["romance", 2]]}, {"n": "Vampire: The Requiem", "s": 2.5, "c": [["surnat", 5], ["sombre", 5], ["politique", 5], ["horreur", 4], ["angoisse", 3], ["romance", 2]]}, {"n": "Warhammer Fantasy Roleplay (4th & 5th Editions)", "s": 3.5, "c": [["sombre", 5], ["haute", 4], ["epee", 4], ["politique", 3], ["horreur", 3], ["realiste", 3], ["humour", 2], ["histo", 2], ["guerre", 2]]}, {"n": "Werewolf: The Apocalypse", "s": 2.5, "c": [["surnat", 5], ["sombre", 4], ["guerre", 4], ["horreur", 3], ["epique", 3], ["mythes", 3], ["postapo", 2], ["religion", 2]]}, {"n": "Wrath & Glory", "s": 3.3, "c": [["sf", 5], ["sombre", 5], ["guerre", 5], ["epique", 4], ["religion", 4], ["horreur", 3], ["mystere", 2]]}, {"n": "Würm", "s": 1.5, "c": [["histo", 5], ["survie", 4], ["explo", 3], ["mythes", 3], ["realiste", 3]]}];
+const $ = id => document.getElementById(id);
+const AXIS_CLASS = {univers: "uni", ambiance: "amb", theme: "thm"};
+const AXIS_ORDER = ["univers", "ambiance", "theme"];
+const AXIS_TITLE = {univers: "Univers", ambiance: "Ambiance", theme: "Thèmes"};
+const KEY = "jeux-relecture-v1";
+const state = {style: {}, note: {}, who: "", general: ""};
+
+function loadState(){
+  try {
+    const saved = JSON.parse(localStorage.getItem(KEY) || "{}");
+    Object.assign(state, saved);
+  } catch (e) {}
+}
+function saveState(){
+  try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+}
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+
+/* filtre par catégorie : groupes par axe */
+let options = '<option value="">Toutes les catégories</option>';
+AXIS_ORDER.forEach(axis => {
+  options += `<optgroup label="${AXIS_TITLE[axis]}">` +
+    Object.entries(LABELS).filter(([, v]) => v.axis === axis)
+      .map(([id, v]) => `<option value="${id}">${esc(v.label)} (niveau 3 ou plus)</option>`).join("") + "</optgroup>";
+});
+$("cat").innerHTML = options;
+
+function bar(style){
+  const filled = Math.round(style);
+  return '<span class="bar" aria-hidden="true">' + [1, 2, 3, 4, 5].map(n => `<i class="${n <= filled ? "on" : ""}"></i>`).join("") + "</span>";
+}
+function chips(categories){
+  return '<div class="chips">' + categories.map(([id, level]) => {
+    const info = LABELS[id];
+    return `<span class="chip ${AXIS_CLASS[info.axis]}${level <= 2 ? " low" : ""}">${esc(info.label)}<b>${level}</b></span>`;
+  }).join("") + "</div>";
+}
+function render(){
+  const text = norm($("q").value.trim());
+  const category = $("cat").value;
+  const sort = $("sort").value;
+  let list = GAMES.map((game, index) => ({game, index}))
+    .filter(({game}) => !text || norm(game.n).includes(text))
+    .filter(({game}) => !category || game.c.some(([id, level]) => id === category && level >= 3));
+  list.sort((a, b) => sort === "styleAsc" ? a.game.s - b.game.s || a.game.n.localeCompare(b.game.n)
+    : sort === "styleDesc" ? b.game.s - a.game.s || a.game.n.localeCompare(b.game.n)
+    : a.game.n.localeCompare(b.game.n));
+  $("rows").innerHTML = list.map(({game, index}) => {
+    const chosen = state.style[index] || "";
+    const select = '<select data-i="' + index + '" data-kind="style" aria-label="Style selon vous"><option value="">Style ?</option>' +
+      [1, 2, 3, 4, 5].map(n => `<option value="${n}"${String(n) === chosen ? " selected" : ""}>${n}</option>`).join("") + "</select>";
+    const note = esc(state.note[index] || "");
+    return `<tr><td class="game">${esc(game.n)}</td><td class="style">${bar(game.s)}${game.s.toFixed(1)}</td>` +
+      `<td>${chips(game.c)}</td><td class="mine">${select}<input type="text" data-i="${index}" data-kind="note" value="${note}" placeholder="Remarque…" aria-label="Remarque sur ${esc(game.n)}"></td></tr>`;
+  }).join("");
+  $("empty").hidden = list.length > 0;
+  $("count").textContent = list.length + " jeu" + (list.length > 1 ? "x" : "") + " sur " + GAMES.length;
+}
+
+function buildReport(){
+  const lines = [];
+  GAMES.forEach((game, index) => {
+    const style = state.style[index], note = (state.note[index] || "").trim();
+    if (!style && !note) return;
+    const parts = [];
+    if (style) parts.push(`style IA ${game.s.toFixed(1)} → ${style}`);
+    if (note) parts.push(`remarque : ${note}`);
+    lines.push(`- ${game.n} : ${parts.join(" ; ")}`);
+  });
+  const header = "Retours sur la classification des jeux" + (state.who.trim() ? ` (${state.who.trim()})` : "");
+  const body = lines.length ? lines.join("\n") : "(aucune correction sur les jeux)";
+  const general = state.general.trim() ? `\n\nJeux qui manquent / remarques générales :\n${state.general.trim()}` : "";
+  return `${header}\n\n${body}${general}`;
+}
+
+$("rows").addEventListener("input", event => {
+  const target = event.target;
+  const index = target.dataset.i;
+  if (index === undefined) return;
+  (target.dataset.kind === "style" ? state.style : state.note)[index] = target.value;
+  saveState();
+});
+$("who").addEventListener("input", event => { state.who = event.target.value; saveState(); });
+$("general").addEventListener("input", event => { state.general = event.target.value; saveState(); });
+["q", "cat", "sort"].forEach(id => $(id).addEventListener("input", render));
+
+$("copy").addEventListener("click", async () => {
+  const report = buildReport();
+  $("result").value = report;
+  try {
+    await navigator.clipboard.writeText(report);
+    $("status").textContent = "Copié ! Vous pouvez le coller dans votre message.";
+  } catch (e) {
+    $("result").select();
+    $("status").textContent = "Copie automatique impossible : le texte est sélectionné, faites Ctrl+C.";
+  }
+});
+$("reset").addEventListener("click", () => {
+  if (!confirm("Effacer tous vos retours ?")) return;
+  state.style = {}; state.note = {}; state.who = ""; state.general = "";
+  saveState();
+  $("who").value = ""; $("general").value = ""; $("result").value = ""; $("status").textContent = "";
+  render();
+});
+
+loadState();
+$("who").value = state.who || "";
+$("general").value = state.general || "";
+render();
+</script>
+</body>
+</html>
