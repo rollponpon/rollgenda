@@ -88,6 +88,12 @@ details.guide summary{cursor:pointer;font-weight:600;color:var(--accent)}
 .uprof .pl{display:flex;justify-content:space-between;gap:10px;padding:2px 0;border-top:1px solid var(--line);font-size:.92rem}
 .uprof .dots{letter-spacing:2px;color:var(--accent);white-space:nowrap}
 .uprof .none{color:var(--muted);font-size:.9rem}
+.part{font-family:Georgia,serif;font-size:1.4rem;margin:28px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--accent)}
+.parts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 6px}
+@media (max-width:640px){.parts{grid-template-columns:1fr}}
+.parts div{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:.92rem}
+.envtitle{margin:12px 0 4px;font-size:.9rem;color:var(--accent)}
+.actions{margin-top:12px}
 a.back{font:inherit;padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);text-decoration:none}
 @media print{
   :root{--bg:#fff;--card:#fff;--ink:#000;--muted:#444;--accent:#000;--accent-ink:#fff;--line:#999;--soft:#eee;--avoid:#000}
@@ -112,6 +118,13 @@ a.back{font:inherit;padding:8px 14px;border-radius:8px;border:1px solid var(--li
     <button class="primary" id="print" type="button">Imprimer / PDF</button>
     <button id="reset" type="button">Tout effacer</button>
   </div>
+
+  <div class="parts">
+    <div><b>Mon profil de fond</b> décrit qui je suis comme joueur : il change peu.</div>
+    <div><b>Mon humeur du moment</b> dit ce que j'ai envie de jouer aujourd'hui : on la règle à chaque fois.</div>
+  </div>
+
+  <h2 class="part">Partie 1 · Mon profil de fond</h2>
 
   <section>
     <h2>Identité</h2>
@@ -141,9 +154,9 @@ a.back{font:inherit;padding:8px 14px;border-radius:8px;border:1px solid var(--li
   </section>
 
   <section>
-    <h2>Curseurs de style</h2>
-    <p class="hint">Ce que j'aime faire. Placez-vous entre les deux pôles ; 3 = au milieu.</p>
-    <div id="cursors"></div>
+    <h2>Mon caractère à la table</h2>
+    <p class="hint">Ma manière d'être joueur, qui change peu. Placez-vous entre les deux pôles ; 3 = au milieu.</p>
+    <div id="cursorsFixed"></div>
   </section>
 
   <section>
@@ -181,7 +194,7 @@ a.back{font:inherit;padding:8px 14px;border-radius:8px;border:1px solid var(--li
   </section>
 
   <section id="universes">
-    <h2>Mes univers</h2>
+    <h2>Mes univers : mes goûts de fond</h2>
     <p class="hint">Pour chaque genre, ambiance ou thème, je donne un niveau d'envie de jouer, de 1 (peu d'envie) à 5 (fan), ou ✗ si je préfère l'éviter. Je peux noter directement la liste, ou répondre au questionnaire, qui calcule des niveaux de départ à corriger ensuite.</p>
     <details class="guide">
       <summary>Je ne sais pas par où commencer : m'aider à choisir</summary>
@@ -200,8 +213,20 @@ a.back{font:inherit;padding:8px 14px;border-radius:8px;border:1px solid var(--li
     <div class="q"><label class="field">L'univers que j'aimerais jouer un jour<input type="text" id="dream"></label></div>
   </section>
 
+  <h2 class="part">Partie 2 · Mon humeur du moment</h2>
+
+  <section id="mood">
+    <h2>Mon envie du jour</h2>
+    <p class="hint">Ces réglages changent selon les jours : ils servent à trouver une table qui correspond à mon envie du moment. Le reste de la fiche, lui, dit qui je suis.</p>
+    <div id="cursorsMood"></div>
+    <h3>Aujourd'hui, j'ai envie de… <span class="hint" id="envCount"></span></h3>
+    <p class="hint">Choisissez jusqu'à trois univers, ambiances ou thèmes.</p>
+    <div id="envies"></div>
+    <div class="actions"><button type="button" id="resetMood">Remettre mon humeur à zéro</button></div>
+  </section>
+
   <section>
-    <h2>Mon profil</h2>
+    <h2>Ma position</h2>
     <div class="profile">
       <svg class="map" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="Carte du profil : axe narratif/mécanique et discret/sociable">
         <rect class="frame" x="10" y="10" width="180" height="180" rx="6"/>
@@ -213,7 +238,7 @@ a.back{font:inherit;padding:8px 14px;border-radius:8px;border:1px solid var(--li
         <text x="186" y="97" text-anchor="end">Mécanique</text>
         <circle id="dot" cx="100" cy="100" r="7" visibility="hidden"/>
       </svg>
-      <div id="summary">Remplissez les deux premiers curseurs de style pour voir votre position sur la carte.</div>
+      <div id="summary">Remplissez « Cadre de jeu » (humeur du moment) et « Interaction » (caractère à la table) pour voir votre position sur la carte.</div>
     </div>
   </section>
 
@@ -298,9 +323,14 @@ $("stats").innerHTML = rows(STATS, "stat_", 1, 5);
 $("skills").innerHTML = rows(SKILLS, "skill_", 0, 3) +
   `<div class="row"><div class="lab"><input type="text" id="skillCustomName" placeholder="Autre compétence…"></div>${scale("skill_custom", 0, 3)}</div>`;
 $("gauges").innerHTML = rows(GAUGES, "gauge_", 1, 5);
-$("cursors").innerHTML = CURSORS.map(([k,t,d,a,b]) =>
+/* curseurs : certains décrivent le caractère (fixe), d'autres l'humeur du moment (mobile) */
+const FIXED_CURSORS = ["regles","interaction","controle","posture"];
+const MOOD_CURSORS = ["cadre","rythme","defi"];
+const cursorHtml = ([k,t,d,a,b]) =>
   `<div class="cursor"><div class="ctitle">${t}</div><div class="cdesc">${d}</div>
-   <div class="cbar"><div class="pole l">${a}</div>${scale("cur_" + k, 1, 5)}<div class="pole r">${b}</div></div></div>`).join("");
+   <div class="cbar"><div class="pole l">${a}</div>${scale("cur_" + k, 1, 5)}<div class="pole r">${b}</div></div></div>`;
+$("cursorsFixed").innerHTML = CURSORS.filter(c => FIXED_CURSORS.includes(c[0])).map(cursorHtml).join("");
+$("cursorsMood").innerHTML = CURSORS.filter(c => MOOD_CURSORS.includes(c[0])).map(cursorHtml).join("");
 $("advantages").innerHTML = chips(ADV, "adv");
 $("drawbacks").innerHTML = chips(DIS, "dis");
 $("tones").innerHTML = chips(TONES, "tone");
@@ -439,6 +469,19 @@ function uniRow([id, label, hint]){
 $("catalog").innerHTML = UNIVERSE_GROUPS.map(g =>
   `<div class="ugroup"><h3>${g.title}</h3><p class="hint">${g.hint}</p><div class="ugrid">${g.items.map(uniRow).join("")}</div></div>`).join("");
 $("uniLegend").innerHTML = LEVELS.map(([v, sym, txt]) => `<span><b>${sym}</b> ${txt}</span>`).join("");
+
+/* envie du jour : jusqu'à trois catégories */
+const MAX_ENVIES = 3;
+$("envies").innerHTML = UNIVERSE_GROUPS.map(g =>
+  `<h4 class="envtitle">${g.title}</h4><div class="chips">` +
+  g.items.map(([id, label]) => `<input type="checkbox" id="env_${id}"><label for="env_${id}">${label}</label>`).join("") +
+  "</div>").join("");
+document.addEventListener("change", e => {
+  if (e.target.id && e.target.id.startsWith("env_") && e.target.checked &&
+      document.querySelectorAll("#envies input:checked").length > MAX_ENVIES){
+    e.target.checked = false;
+  }
+});
 $("quiz").innerHTML = QUIZ.map((qq, qi) =>
   `<div class="qz"><p>${qi + 1}. ${qq.q}</p><div class="chips">` +
   qq.a.map(([t], ai) => `<input type="checkbox" id="qz${qi}_${ai}"><label for="qz${qi}_${ai}">${t}</label>`).join("") +
@@ -545,6 +588,7 @@ function refresh(){
     : "";
   $("advCount").textContent = `(${count("adv", ADV.length)} cochés)`;
   $("disCount").textContent = `(${count("dis", DIS.length)} cochés)`;
+  $("envCount").textContent = `(${document.querySelectorAll("#envies input:checked").length}/${MAX_ENVIES})`;
 
   const x = val("cur_cadre"), y = val("cur_interaction");
   const dot = $("dot");
@@ -558,7 +602,7 @@ function refresh(){
   }
   if (x !== null) parts.push(x < 3 ? "plutôt <b>narratif</b>" : x > 3 ? "plutôt <b>mécanique</b>" : "<b>équilibré</b> entre narration et mécanique");
   if (y !== null) parts.push(y < 3 ? "plutôt <b>discret</b> dans les échanges" : y > 3 ? "plutôt <b>sociable</b> à la table" : "<b>à l'aise</b> avec ou sans échanges");
-  let html = parts.length ? "Profil : " + parts.join(", ") + "." : "Remplissez les deux premiers curseurs de style pour voir votre position sur la carte.";
+  let html = parts.length ? "Profil : " + parts.join(", ") + "." : "Remplissez « Cadre de jeu » (humeur du moment) et « Interaction » (caractère à la table) pour voir votre position sur la carte.";
   const c1 = $("class1").value, c2 = $("class2").value;
   if (c1) html += `<br>Classe : <b>${c1}</b>` + (c2 ? ` / ${c2}` : "") + ".";
   $("summary").innerHTML = html;
@@ -592,6 +636,11 @@ function load(){
 document.addEventListener("input", () => { refresh(); save(); });
 document.addEventListener("change", () => { refresh(); save(); });
 $("print").addEventListener("click", () => window.print());
+$("resetMood").addEventListener("click", () => {
+  MOOD_CURSORS.forEach(k => document.querySelectorAll(`input[name="cur_${k}"]`).forEach(r => { r.checked = false; }));
+  document.querySelectorAll("#envies input").forEach(c => { c.checked = false; });
+  refresh(); save();
+});
 $("reset").addEventListener("click", () => {
   if (!confirm("Effacer toute la fiche ?")) return;
   fields().forEach(el => {

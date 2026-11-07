@@ -68,7 +68,11 @@ section.hero{padding:48px 0 56px;border-top:0}
 .list span{color:var(--muted)}
 
 .demo{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:22px}
-.pick{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.pick{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+.result .part{font-size:1rem;margin:14px 0 4px}
+.result h4{font-size:.9rem;margin:12px 0 4px}
+.flag.info{border-style:dashed;color:var(--muted)}
+.chip.no{border-color:var(--warn);color:var(--warn)}
 @media (max-width:640px){.pick{grid-template-columns:1fr}}
 .pick label{font-size:.85rem;color:var(--muted);display:block}
 select{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 10px;margin-top:3px}
@@ -198,7 +202,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 48px;color:var(--muted);f
 <section class="block" id="phase1"><div class="wrap">
   <div class="eyebrow">Phase 1 · maquette prête</div>
   <h2>Les profils : joueur et maître de jeu</h2>
-  <p class="lead">Deux fiches distinctes, construites sur le même modèle. Les curseurs disent ce qu'on aime faire, pas ce qu'on vaut : un joueur « narratif » n'est pas moins bon qu'un joueur « mécanique ».</p>
+  <p class="lead">Deux fiches distinctes, construites sur le même modèle : une <b>partie fixe</b> (qui je suis) et une <b>partie mobile</b>. Pour un joueur, la partie mobile est son humeur du moment, qu'il règle à chaque fois. Pour un maître de jeu, elle vient du jeu qu'il propose : il a un sous-profil par jeu. Les curseurs disent ce qu'on aime faire, pas ce qu'on vaut.</p>
   <div class="two">
     <div class="card pl">
       <h3>Fiche de joueur</h3>
@@ -206,10 +210,11 @@ footer{border-top:1px solid var(--line);padding:24px 0 48px;color:var(--muted);f
         <li><b>Identité</b><span>mode de jeu (table, en ligne), langues</span></li>
         <li><b>Caractéristiques</b><span>imagination, interprétation, écoute, coopération, improvisation, audace</span></li>
         <li><b>Compétences</b><span>roleplay, tactique, enquête, narration, humour, gestion de groupe</span></li>
-        <li><b>Curseurs de style</b><span>narratif ↔ mécanique, rapport aux règles, interaction, contrôle, rythme, posture, défi</span></li>
+        <li><b>Caractère à la table</b><span>rapport aux règles, interaction, contrôle de l'histoire, posture (fixe)</span></li>
         <li><b>Jauges</b><span>énergie, patience, fair-play, immersion</span></li>
         <li><b>Traits et classe</b><span>avantages, désavantages, six classes</span></li>
-        <li><b>Mes univers</b><span>32 catégories notées de 1 à 5</span></li>
+        <li><b>Mes univers</b><span>mes goûts de fond : 32 catégories notées de 1 à 5</span></li>
+        <li><b>Mon humeur du moment</b><span>narratif ↔ mécanique, rythme, défi, jusqu'à trois envies du jour (mobile)</span></li>
         <li><b>Séance zéro</b><span>tonalité, lignes rouges et voiles</span></li>
       </ul>
       <a class="btn pl" href="fiche-joueur-jdr.html">Ouvrir la fiche joueur</a>
@@ -220,10 +225,11 @@ footer{border-top:1px solid var(--line);padding:24px 0 48px;color:var(--muted);f
         <li><b>Identité</b><span>mode de jeu (table, en ligne), langues</span></li>
         <li><b>Caractéristiques</b><span>imagination, improvisation, PNJ, lecture de la table, équité, organisation, présence</span></li>
         <li><b>Compétences</b><span>ambiance, rythme, intrigues, combats, arbitrage, accueil des débutants, gestion des tensions</span></li>
-        <li><b>Curseurs de style</b><span>préparation, bac à sable ↔ scénario, règles, partage du contrôle, dangerosité, ton…</span></li>
+        <li><b>Ma façon d'animer</b><span>préparation, bac à sable ↔ scénario, partage du contrôle, posture (fixe)</span></li>
         <li><b>Jauges</b><span>énergie, patience, détachement, temps de préparation</span></li>
         <li><b>Traits et classe</b><span>avantages, désavantages, six classes</span></li>
-        <li><b>Mes univers</b><span>mêmes 32 catégories, notées de 1 à 5</span></li>
+        <li><b>Mes univers</b><span>mes goûts d'animation : mêmes 32 catégories, notées de 1 à 5</span></li>
+        <li><b>Mes parties</b><span>un sous-profil par jeu : aisance (je découvre, à l'aise, je maîtrise), style et univers du jeu, ton, dangerosité, préparation, format (mobile)</span></li>
         <li><b>Séance zéro</b><span>règles de table, outils de sécurité, lignes rouges</span></li>
       </ul>
       <a class="btn gm" href="fiche-mj-jdr.html">Ouvrir la fiche MJ</a>
@@ -240,26 +246,27 @@ footer{border-top:1px solid var(--line);padding:24px 0 48px;color:var(--muted);f
 <section class="block" id="demo"><div class="wrap">
   <div class="eyebrow">Démo interactive</div>
   <h2>Le calcul d'affinité</h2>
-  <p class="lead">Avec des profils d'exemple, voici comment on pourrait rapprocher un joueur et un maître de jeu. Changez les profils, ou cliquez une case de la matrice.</p>
+  <p class="lead">Avec des profils d'exemple, voici comment on pourrait rapprocher un joueur et une partie proposée par un maître de jeu. Deux affinités sont calculées séparément : la <b>compatibilité humaine</b> (qui je suis) et l'<b>envie de jeu</b> (ce que j'ai envie de jouer aujourd'hui). Changez les profils, ou cliquez une case de la matrice.</p>
 
   <div class="demo">
     <div class="pick">
       <label>Joueur<select id="selP"></select></label>
       <label>Maître de jeu<select id="selM"></select></label>
+      <label>Partie proposée<select id="selQ"></select></label>
     </div>
     <div class="result" id="result"></div>
     <details>
-      <summary>Comment le pourcentage est calculé (version de démonstration)</summary>
-      <p><b>Style de jeu</b> : on compare les curseurs communs (cadre de jeu, rapport aux règles, partage du contrôle). Plus les deux personnes sont proches sur un curseur, plus la similarité est haute.</p>
-      <p><b>Univers</b> : on compare les niveaux notés sur les 32 catégories (similarité cosinus). Une catégorie que l'un évite (✗) alors que l'autre la note 3 ou plus retire des points.</p>
-      <p><b>Pratique</b> : le mode de jeu et la langue sont des filtres, pas des points. S'ils sont incompatibles, aucune table n'est proposée.</p>
-      <p>Pondération de l'exemple : 45 % style, 55 % univers. Ce n'est qu'une première idée à affiner avec de vrais profils.</p>
+      <summary>Comment les pourcentages sont calculés (version de démonstration)</summary>
+      <p><b>Compatibilité humaine</b> : on compare la partie fixe du joueur et celle du maître de jeu, c'est-à-dire le partage du contrôle, ainsi que la sociabilité du joueur et la posture du maître de jeu. Plus les deux sont proches, plus la compatibilité est haute.</p>
+      <p><b>Envie de jeu</b> : on compare l'humeur du moment du joueur à la partie proposée : le style du jeu (narratif ↔ mécanique), le défi souhaité face à la dangerosité de la table, et l'univers (goûts du joueur, renforcés par ses envies du jour, face aux catégories du jeu). Une catégorie que le joueur évite (✗) alors que le jeu la note 3 ou plus retire des points. Pondération de l'exemple : 35 % style, 20 % défi, 45 % univers.</p>
+      <p><b>Pratique</b> : le mode de jeu et la langue sont des filtres, pas des points. S'ils sont incompatibles, aucune table n'est proposée. L'aisance du maître de jeu avec le jeu est affichée à part.</p>
+      <p>Ce n'est qu'une première idée : on pourra aussi en tirer un seul score global, ou garder uniquement des affinités en plusieurs parties.</p>
     </details>
   </div>
 
   <div class="demo">
     <h3 style="margin-bottom:4px">Matrice des affinités</h3>
-    <p class="note" style="margin:0 0 10px">Tous les joueurs d'exemple face à tous les maîtres de jeu. « — » signifie que le mode de jeu ou la langue empêche toute table.</p>
+    <p class="note" style="margin:0 0 10px">Chaque case affiche <b>la compatibilité humaine</b> puis <b>l'envie de jeu</b> (en %). Les colonnes sont les parties proposées par les maîtres de jeu. « — » signifie que le mode de jeu ou la langue empêche toute table.</p>
     <div id="matrix"></div>
   </div>
 </div></section>
@@ -367,150 +374,193 @@ footer{border-top:1px solid var(--line);padding:24px 0 48px;color:var(--muted);f
 
 <footer><div class="wrap">Maquette de démonstration. Profils, jeux et créneaux d'exemple fictifs ; les fiches enregistrent vos réponses uniquement dans votre navigateur.</div></footer>
 
+<script src="jeux-data.js"></script>
 <script>
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
-const LABEL = {
-  haute:"Haute fantasy", epee:"Épée et sorcellerie", mythes:"Mythes et légendes", surnat:"Surnaturel moderne",
-  sf:"Science-fiction spatiale", cyber:"Cyberpunk", postapo:"Post-apocalyptique", hero:"Super-héros",
-  steam:"Steampunk", western:"Western", histo:"Historique", pulp:"Aventure pulp", polar:"Polar et enquête",
-  espion:"Espionnage", horreur:"Horreur", asie:"Asie et arts martiaux", cartoon:"Cartoon et animaux",
-  sombre:"Sombre", humour:"Humoristique", epique:"Épique et héroïque", mystere:"Mystérieux",
-  angoisse:"Angoissant", realiste:"Réaliste et brut", merveil:"Merveilleux",
-  politique:"Politique", religion:"Religion", guerre:"Guerre", sport:"Sport", survie:"Survie",
-  explo:"Exploration", romance:"Romance", psy:"Pouvoirs psychiques"
-};
-const MODE = {table:"Sur table", online:"En ligne", both:"Sur table et en ligne"};
-const LANG = {fr:"français", en:"anglais"};
+/* Les jeux viennent de jeux-data.js (même dossier) : style de 1 (narratif) à 5 (mécanique) et catégories */
+const CATALOGUE = typeof JEUX !== "undefined" ? JEUX : [];
+const CAT_LABEL = typeof JEUX_LABELS !== "undefined" ? JEUX_LABELS : {};
+const gameByName = name => CATALOGUE.find(g => g.n === name) || null;
+const catLabel = id => (CAT_LABEL[id] && CAT_LABEL[id].label) || id;
 
-/* Curseurs communs aux joueurs et aux maîtres de jeu */
-const DIMS = [
-  ["cadre", "Cadre de jeu", "Narratif", "Mécanique"],
-  ["regles", "Rapport aux règles", "Souple", "À la lettre"],
-  ["controle", "Partage du contrôle", "Cadré par le MJ", "Co-création"]
-];
+const MODE = {table: "Sur table", online: "En ligne", both: "Sur table et en ligne"};
+const MASTERY_TEXT = {decouvre: "découvre ce jeu", aise: "est à l'aise avec ce jeu", maitrise: "maîtrise ce jeu"};
 
-/* Profils d'exemple (fictifs). Niveaux 1 à 5, "x" = à éviter. */
+/* Profils d'exemple (fictifs).
+   Joueur : partie fixe (fixed), goûts de fond (tastes, 1 à 5 ou "x" pour éviter) et humeur du moment (mood).
+   Maître de jeu : partie fixe (fixed) et parties proposées, une par jeu (aisance, dangerosité). */
 const PLAYERS = [
-  {name:"Profil « Conteur »", style:{cadre:1, regles:2, controle:5}, mode:"both", lang:["fr"],
-   uni:{haute:5, mythes:4, merveil:5, epique:4, explo:3, romance:3, horreur:"x", angoisse:"x"}},
-  {name:"Profil « Stratège »", style:{cadre:5, regles:5, controle:2}, mode:"table", lang:["fr","en"],
-   uni:{epee:4, sf:5, cyber:4, histo:3, guerre:4, survie:3}},
-  {name:"Profil « Enquêteur »", style:{cadre:3, regles:3, controle:3}, mode:"online", lang:["fr"],
-   uni:{polar:5, espion:4, mystere:5, surnat:3, horreur:2, sombre:3, politique:4}}
+  {name: "Profil « Conteur »", fixed: {controle: 5, interaction: 4}, mood: {cadre: 1, defi: 2, envies: ["haute", "merveil"]},
+   tastes: {haute: 5, mythes: 4, merveil: 5, epique: 4, explo: 3, romance: 3, horreur: "x", angoisse: "x"}, mode: "both", lang: ["fr"]},
+  {name: "Profil « Stratège »", fixed: {controle: 2, interaction: 3}, mood: {cadre: 5, defi: 5, envies: ["sf", "cyber"]},
+   tastes: {epee: 4, sf: 5, cyber: 4, histo: 3, guerre: 4, survie: 3}, mode: "table", lang: ["fr", "en"]},
+  {name: "Profil « Enquêteur »", fixed: {controle: 3, interaction: 5}, mood: {cadre: 3, defi: 4, envies: ["polar", "mystere"]},
+   tastes: {polar: 5, espion: 4, mystere: 5, surnat: 3, horreur: 2, sombre: 3, politique: 4}, mode: "online", lang: ["fr"]}
 ];
 const GMS = [
-  {name:"MJ « Conteur »", style:{cadre:1, regles:2, controle:4}, mode:"both", lang:["fr"],
-   uni:{haute:5, mythes:4, merveil:4, epique:5, explo:4, horreur:"x"}},
-  {name:"MJ « Arbitre »", style:{cadre:5, regles:5, controle:1}, mode:"table", lang:["fr"],
-   uni:{epee:4, sf:4, cyber:5, histo:3, guerre:3, survie:4}},
-  {name:"MJ « Mystère »", style:{cadre:3, regles:3, controle:3}, mode:"online", lang:["fr","en"],
-   uni:{polar:5, espion:3, horreur:4, mystere:5, surnat:4, angoisse:4, sombre:4}}
-];
-const GAMES = [
-  {name:"Les Marches d'Argent", gm:0, style:{cadre:2, regles:2, controle:4}, uni:{haute:5, mythes:4, merveil:3, epique:4}, note:"Fantasy narrative"},
-  {name:"Neon Protocol", gm:1, style:{cadre:4, regles:5, controle:2}, uni:{cyber:5, sf:3, sombre:4, espion:3, survie:2}, note:"Cyberpunk à règles précises"},
-  {name:"Brume sur Port-Corbeau", gm:2, style:{cadre:3, regles:3, controle:3}, uni:{polar:4, horreur:5, mystere:5, surnat:4, angoisse:4}, note:"Enquête et horreur"}
+  {name: "MJ « Conteur »", fixed: {controle: 4, posture: 5}, mode: "both", lang: ["fr"], parties: [
+    {game: "Daggerheart", mastery: "maitrise", danger: 2},
+    {game: "The One Ring (2nd Edition)", mastery: "aise", danger: 3}]},
+  {name: "MJ « Arbitre »", fixed: {controle: 1, posture: 1}, mode: "table", lang: ["fr"], parties: [
+    {game: "Cyberpunk RED", mastery: "maitrise", danger: 4},
+    {game: "Traveller (Mongoose 2nd Edition)", mastery: "aise", danger: 3}]},
+  {name: "MJ « Mystère »", fixed: {controle: 3, posture: 3}, mode: "online", lang: ["fr", "en"], parties: [
+    {game: "Call of Cthulhu (7th Edition)", mastery: "maitrise", danger: 4},
+    {game: "Vaesen", mastery: "decouvre", danger: 3}]}
 ];
 
-function affinity(a, b){
-  const sim = DIMS.map(([k]) => 1 - Math.abs(a.style[k] - b.style[k]) / 4);
-  const style = sim.reduce((s, x) => s + x, 0) / sim.length;
-  const ids = new Set([...Object.keys(a.uni), ...Object.keys(b.uni)]);
-  let dot = 0, na = 0, nb = 0;
-  const shared = [], conf = [];
-  ids.forEach(id => {
-    const x = a.uni[id], y = b.uni[id];
-    const xn = typeof x === "number" ? x : 0, yn = typeof y === "number" ? y : 0;
-    dot += xn * yn; na += xn * xn; nb += yn * yn;
-    if (xn >= 3 && yn >= 3) shared.push([id, Math.min(xn, yn)]);
-    if ((x === "x" && yn >= 3) || (y === "x" && xn >= 3)) conf.push(id);
-  });
-  const cos = na && nb ? dot / Math.sqrt(na * nb) : 0;
-  const uni = Math.max(0, cos - 0.2 * conf.length);
-  const modeOk = !a.mode || !b.mode || a.mode === "both" || b.mode === "both" || a.mode === b.mode;
-  const langOk = !a.lang || !b.lang || a.lang.some(l => b.lang.includes(l));
-  return {
-    style, uni, global: 0.45 * style + 0.55 * uni, sim,
-    shared: shared.sort((p, q) => q[1] - p[1]), conf, modeOk, langOk, possible: modeOk && langOk
-  };
-}
+const closeness = (a, b) => 1 - Math.abs(a - b) / 4;
 const pct = x => Math.round(x * 100);
 
+/* Univers : similarité entre les goûts du joueur (renforcés par ses envies du jour) et les catégories du jeu */
+function universeFit(player, categories){
+  const vector = {};
+  Object.entries(player.tastes).forEach(([id, level]) => { if (typeof level === "number") vector[id] = level; });
+  player.mood.envies.forEach(id => { vector[id] = 5; });
+  const avoided = Object.keys(player.tastes).filter(id => player.tastes[id] === "x");
+  const game = Object.fromEntries(categories);
+  let dot = 0, normA = 0, normB = 0;
+  new Set([...Object.keys(vector), ...Object.keys(game)]).forEach(id => {
+    const a = vector[id] || 0, b = game[id] || 0;
+    dot += a * b; normA += a * a; normB += b * b;
+  });
+  const cosine = normA && normB ? dot / Math.sqrt(normA * normB) : 0;
+  const shared = Object.keys(game).filter(id => (vector[id] || 0) >= 3 && game[id] >= 3)
+    .sort((x, y) => Math.min(vector[y], game[y]) - Math.min(vector[x], game[x]));
+  const conflicts = avoided.filter(id => (game[id] || 0) >= 3);
+  return {value: Math.max(0, cosine - 0.2 * conflicts.length), shared, conflicts};
+}
+
+/* Compatibilité humaine : partie fixe du joueur contre partie fixe du maître de jeu */
+function humanCompat(player, gm){
+  const dims = [
+    {label: "Partage du contrôle", a: player.fixed.controle, b: gm.fixed.controle, left: "Cadré par le MJ", right: "Co-création"},
+    {label: "Sociabilité du joueur et posture du MJ", a: player.fixed.interaction, b: gm.fixed.posture, left: "Discret · arbitre neutre", right: "Sociable · allié des joueurs"}
+  ].map(d => ({...d, score: closeness(d.a, d.b)}));
+  return {dims, value: dims.reduce((sum, d) => sum + d.score, 0) / dims.length};
+}
+
+/* Envie de jeu : humeur du moment du joueur contre la partie proposée (le jeu et les réglages du MJ) */
+function gameFit(player, party){
+  const game = gameByName(party.game);
+  if (!game) return null;
+  const dims = [
+    {label: "Style du jeu", a: player.mood.cadre, b: game.s, left: "Narratif", right: "Mécanique", score: closeness(player.mood.cadre, game.s)},
+    {label: "Défi du joueur et dangerosité de la table", a: player.mood.defi, b: party.danger, left: "Détendu · héroïque", right: "Exigeant · impitoyable", score: closeness(player.mood.defi, party.danger)}
+  ];
+  const universe = universeFit(player, game.c);
+  return {game, dims, universe, value: 0.35 * dims[0].score + 0.2 * dims[1].score + 0.45 * universe.value};
+}
+
+/* Pratique : mode de jeu et langue sont des filtres, pas des points */
+function practical(player, gm){
+  const modeOk = player.mode === "both" || gm.mode === "both" || player.mode === gm.mode;
+  const langOk = player.lang.some(l => gm.lang.includes(l));
+  return {modeOk, langOk, possible: modeOk && langOk};
+}
+
 /* ---- démo d'affinité ---- */
-let selP = 0, selM = 0;
+let selP = 0, selM = 0, selQ = 0;
 $("selP").innerHTML = PLAYERS.map((p, i) => `<option value="${i}">${esc(p.name)}</option>`).join("");
-$("selM").innerHTML = GMS.map((p, i) => `<option value="${i}">${esc(p.name)}</option>`).join("");
+$("selM").innerHTML = GMS.map((m, i) => `<option value="${i}">${esc(m.name)}</option>`).join("");
 $("selG").innerHTML = PLAYERS.map((p, i) => `<option value="${i}">${esc(p.name)}</option>`).join("");
 
-function track(p, g, [k, label, left, right]){
-  const pos = v => ((v - 1) / 4) * 100;
-  return `<div class="dim"><div class="row"><span>${label}</span></div>
-    <div class="track"><i class="p" style="left:${pos(p.style[k])}%"></i><i class="g" style="left:${pos(g.style[k])}%"></i></div>
-    <div class="poles"><span>${left}</span><span>${right}</span></div></div>`;
+const position = v => ((v - 1) / 4) * 100;
+function track(d){
+  return `<div class="dim"><div class="row"><span>${d.label}</span></div>
+    <div class="track"><i class="p" style="left:${position(d.a)}%"></i><i class="g" style="left:${position(d.b)}%"></i></div>
+    <div class="poles"><span>${d.left}</span><span>${d.right}</span></div></div>`;
 }
+function scoreRow(label, value){
+  return `<div class="score"><span>${label}</span><div class="bar"><i style="width:${pct(value)}%"></i></div><b>${pct(value)} %</b></div>`;
+}
+function chipList(ids, extra){
+  return ids.length ? ids.map(id => `<span class="chip ${extra || ""}">${esc(catLabel(id))}</span>`).join("") : '<span class="muted">Aucune.</span>';
+}
+
 function renderResult(){
-  const p = PLAYERS[selP], g = GMS[selM], r = affinity(p, g);
-  const chips = r.shared.length ? r.shared.slice(0, 6).map(([id]) => `<span class="chip">${LABEL[id]}</span>`).join("") : '<span class="muted">Aucune catégorie en commun.</span>';
-  const friction = r.conf.length
-    ? `<div class="chips">${r.conf.map(id => `<span class="chip no">✗ ${LABEL[id]}</span>`).join("")}</div>`
-    : '<span class="muted">Aucune.</span>';
+  const player = PLAYERS[selP], gm = GMS[selM], party = gm.parties[selQ];
+  const prac = practical(player, gm), human = humanCompat(player, gm), fit = gameFit(player, party);
+  if (!fit){ $("result").innerHTML = '<p class="muted">Jeu introuvable dans le catalogue (fichier jeux-data.js manquant ?).</p>'; return; }
   const why = [];
-  if (!r.modeOk) why.push(`mode de jeu incompatible (${MODE[p.mode].toLowerCase()} / ${MODE[g.mode].toLowerCase()})`);
-  if (!r.langOk) why.push("pas de langue commune");
-  const big = r.possible
-    ? `<div class="big"><b>${pct(r.global)} %</b><span>d'affinité</span></div>`
-    : `<div class="big off"><span>Affinité</span><b>Pas de table possible</b><span>${esc(why.join(", "))}</span></div>`;
-  $("result").innerHTML = `<div>${big}
+  if (!prac.modeOk) why.push(`mode de jeu incompatible (${MODE[player.mode].toLowerCase()} / ${MODE[gm.mode].toLowerCase()})`);
+  if (!prac.langOk) why.push("pas de langue commune");
+  const scores = prac.possible
+    ? `<div class="big"><b>${pct(human.value)} %</b><span>compatibilité humaine</span></div>
+       <div class="big" style="margin-top:10px"><b>${pct(fit.value)} %</b><span>envie de jeu</span></div>`
+    : `<div class="big off"><span>Affinités</span><b>Pas de table possible</b><span>${esc(why.join(", "))}</span></div>`;
+  $("result").innerHTML = `<div>${scores}
       <div class="flags">
-        <span class="flag ${r.modeOk ? "ok" : "ko"}">${r.modeOk ? "✓" : "✗"} Mode de jeu</span>
-        <span class="flag ${r.langOk ? "ok" : "ko"}">${r.langOk ? "✓" : "✗"} Langue</span>
+        <span class="flag ${prac.modeOk ? "ok" : "ko"}">${prac.modeOk ? "✓" : "✗"} Mode de jeu</span>
+        <span class="flag ${prac.langOk ? "ok" : "ko"}">${prac.langOk ? "✓" : "✗"} Langue</span>
+        <span class="flag info">${esc(gm.name)} ${esc(MASTERY_TEXT[party.mastery])}</span>
       </div></div>
     <div>
-      <div class="legend"><span><i style="background:var(--pl)"></i>Joueur</span><span><i style="background:var(--gm)"></i>Maître de jeu</span></div>
-      ${DIMS.map(d => track(p, g, d)).join("")}
-      <div class="score"><span>Style de jeu</span><div class="bar"><i style="width:${pct(r.style)}%"></i></div><b>${pct(r.style)} %</b></div>
-      <div class="score"><span>Univers</span><div class="bar"><i style="width:${pct(r.uni)}%"></i></div><b>${pct(r.uni)} %</b></div>
-      <h3 style="font-size:.95rem;margin:14px 0 4px">En commun</h3><div class="chips" style="margin-top:0">${chips}</div>
-      <h3 style="font-size:.95rem;margin:14px 0 4px">Points de friction</h3>${friction}
+      <div class="legend"><span><i style="background:var(--pl)"></i>Joueur</span><span><i style="background:var(--gm)"></i>Maître de jeu / jeu</span></div>
+      <h3 class="part">Compatibilité humaine <span class="muted">(le caractère, partie fixe)</span></h3>
+      ${human.dims.map(track).join("")}
+      ${scoreRow("Compatibilité", human.value)}
+      <h3 class="part">Envie de jeu <span class="muted">(l'humeur du joueur et le jeu proposé)</span></h3>
+      <p class="note" style="margin:0">Partie proposée : <b>${esc(party.game)}</b>. Envies du jour du joueur : ${esc(player.mood.envies.map(catLabel).join(", "))}.</p>
+      ${fit.dims.map(track).join("")}
+      ${scoreRow("Style", fit.dims[0].score)}
+      ${scoreRow("Défi", fit.dims[1].score)}
+      ${scoreRow("Univers", fit.universe.value)}
+      <h4>En commun</h4><div class="chips" style="margin-top:0">${chipList(fit.universe.shared)}</div>
+      <h4>Points de friction</h4>${fit.universe.conflicts.length ? `<div class="chips">${chipList(fit.universe.conflicts, "no")}</div>` : '<span class="muted">Aucune.</span>'}
     </div>`;
 }
+
 function renderMatrix(){
-  let h = `<div style="overflow-x:auto"><table class="matrix"><thead><tr><th></th>${GMS.map(g => `<th>${esc(g.name)}</th>`).join("")}</tr></thead><tbody>`;
-  PLAYERS.forEach((p, i) => {
-    h += `<tr><td>${esc(p.name)}</td>`;
-    GMS.forEach((g, j) => {
-      const r = affinity(p, g);
-      const v = pct(r.global);
-      const style = r.possible ? `style="background:color-mix(in srgb, var(--gm) ${Math.round(v * 0.5)}%, var(--card))"` : "";
-      h += `<td><button type="button" data-p="${i}" data-m="${j}" class="${r.possible ? "" : "na"}${i === selP && j === selM ? " sel" : ""}" ${style} aria-label="${esc(p.name)} avec ${esc(g.name)}">${r.possible ? v + " %" : "—"}</button></td>`;
+  const columns = [];
+  GMS.forEach((gm, mi) => gm.parties.forEach((party, qi) => columns.push({gm, party, mi, qi})));
+  let html = `<div style="overflow-x:auto"><table class="matrix"><thead><tr><th></th>${columns.map(c => `<th>${esc(c.gm.name)}<br><small>${esc(c.party.game)}</small></th>`).join("")}</tr></thead><tbody>`;
+  PLAYERS.forEach((player, pi) => {
+    html += `<tr><td>${esc(player.name)}</td>`;
+    columns.forEach(({gm, party, mi, qi}) => {
+      const prac = practical(player, gm), human = humanCompat(player, gm).value, fit = gameFit(player, party);
+      const value = fit ? fit.value : 0;
+      const style = prac.possible ? `style="background:color-mix(in srgb, var(--gm) ${Math.round((human + value) * 25)}%, var(--card))"` : "";
+      const selected = pi === selP && mi === selM && qi === selQ ? " sel" : "";
+      html += `<td><button type="button" data-p="${pi}" data-m="${mi}" data-q="${qi}" class="${prac.possible ? "" : "na"}${selected}" ${style}
+        title="${prac.possible ? `Compatibilité humaine ${pct(human)} %, envie de jeu ${pct(value)} %` : "Pas de table possible"}">${prac.possible ? `<b>${pct(human)}</b> · ${pct(value)}` : "—"}</button></td>`;
     });
-    h += "</tr>";
+    html += "</tr>";
   });
-  $("matrix").innerHTML = h + "</tbody></table></div>";
+  $("matrix").innerHTML = html + "</tbody></table></div>";
+}
+function fillParties(){
+  $("selQ").innerHTML = GMS[selM].parties.map((party, i) => `<option value="${i}">${esc(party.game)}</option>`).join("");
+  $("selQ").value = selQ;
 }
 function refreshDemo(){
   $("selP").value = selP; $("selM").value = selM;
-  renderResult(); renderMatrix();
+  fillParties(); renderResult(); renderMatrix();
 }
 $("selP").addEventListener("change", e => { selP = +e.target.value; refreshDemo(); });
-$("selM").addEventListener("change", e => { selM = +e.target.value; refreshDemo(); });
+$("selM").addEventListener("change", e => { selM = +e.target.value; selQ = 0; refreshDemo(); });
+$("selQ").addEventListener("change", e => { selQ = +e.target.value; refreshDemo(); });
 $("matrix").addEventListener("click", e => {
-  const b = e.target.closest("button[data-p]");
-  if (!b) return;
-  selP = +b.dataset.p; selM = +b.dataset.m; refreshDemo();
+  const button = e.target.closest("button[data-p]");
+  if (!button) return;
+  selP = +button.dataset.p; selM = +button.dataset.m; selQ = +button.dataset.q;
+  refreshDemo();
 });
 
-/* ---- jeux suggérés ---- */
+/* ---- parties suggérées à un joueur ---- */
 function renderGames(){
-  const p = PLAYERS[+$("selG").value];
-  const list = GAMES.map(g => ({g, r: affinity(p, g), gm: GMS[g.gm]}))
-    .map(x => ({...x, ok: affinity(p, x.gm).possible}))
-    .sort((a, b) => b.r.global - a.r.global);
-  $("games").innerHTML = list.map(({g, r, gm, ok}) => `<div class="item">
-      <div><b>${esc(g.name)}</b><br><small>${esc(g.note)} · proposé par ${esc(gm.name)}${ok ? "" : " (incompatible : mode ou langue)"}</small></div>
-      <div class="pc">${pct(r.global)} %</div></div>`).join("");
+  const player = PLAYERS[+$("selG").value];
+  const list = [];
+  GMS.forEach(gm => gm.parties.forEach(party => {
+    const fit = gameFit(player, party);
+    if (fit) list.push({gm, party, fit, ok: practical(player, gm).possible});
+  }));
+  list.sort((a, b) => b.fit.value - a.fit.value);
+  $("games").innerHTML = list.map(({gm, party, fit, ok}) => `<div class="item">
+      <div><b>${esc(party.game)}</b><br><small>proposé par ${esc(gm.name)}, qui ${esc(MASTERY_TEXT[party.mastery])}${ok ? "" : " · incompatible : mode ou langue"}</small></div>
+      <div class="pc">${pct(fit.value)} %</div></div>`).join("");
 }
 $("selG").addEventListener("change", renderGames);
 

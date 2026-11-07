@@ -88,6 +88,22 @@ details.guide summary{cursor:pointer;font-weight:600;color:var(--accent)}
 .uprof .pl{display:flex;justify-content:space-between;gap:10px;padding:2px 0;border-top:1px solid var(--line);font-size:.92rem}
 .uprof .dots{letter-spacing:2px;color:var(--accent);white-space:nowrap}
 .uprof .none{color:var(--muted);font-size:.9rem}
+.part{font-family:Georgia,serif;font-size:1.4rem;margin:28px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--accent)}
+.parts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 6px}
+@media (max-width:640px){.parts{grid-template-columns:1fr}}
+.parts div{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:.92rem}
+.actions{margin-top:12px}
+.party{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:12px 0;background:var(--bg)}
+.party .head{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.party .head input{flex:1}
+.party .pinfo{margin:8px 0;font-size:.92rem}
+.party .pchips{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.party .pchip{font-size:.78rem;padding:1px 8px;border-radius:99px;border:1px solid var(--line);background:var(--card)}
+.party .pbar{display:inline-flex;gap:2px;vertical-align:middle;margin:0 6px}
+.party .pbar i{width:9px;height:14px;border-radius:2px;background:var(--soft);border:1px solid var(--line)}
+.party .pbar i.on{background:var(--accent);border-color:var(--accent)}
+.party .muted{color:var(--muted)}
+.party h3{margin:10px 0 4px}
 a.back{font:inherit;padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);text-decoration:none}
 @media print{
   :root{--bg:#fff;--card:#fff;--ink:#000;--muted:#444;--accent:#000;--accent-ink:#fff;--line:#999;--soft:#eee;--avoid:#000}
@@ -103,6 +119,7 @@ a.back{font:inherit;padding:8px 14px;border-radius:8px;border:1px solid var(--li
 </style>
 </head>
 <body>
+<script src="jeux-data.js"></script>
 <div class="page">
   <h1>Fiche de maître de jeu</h1>
   <p class="sub">À remplir avant de lancer une campagne, puis à comparer avec les fiches des joueurs. Les curseurs disent ce qu'on aime faire, pas ce qu'on vaut.</p>
@@ -112,6 +129,13 @@ a.back{font:inherit;padding:8px 14px;border-radius:8px;border:1px solid var(--li
     <button class="primary" id="print" type="button">Imprimer / PDF</button>
     <button id="reset" type="button">Tout effacer</button>
   </div>
+
+  <div class="parts">
+    <div><b>Mon profil de fond</b> décrit qui je suis comme maître de jeu : il change peu.</div>
+    <div><b>Mes parties</b> : un sous-profil par jeu que je propose. Il reprend ce qui vient du jeu (style, univers) et ce que j'ajuste pour ma table.</div>
+  </div>
+
+  <h2 class="part">Partie 1 · Mon profil de fond</h2>
 
   <section>
     <h2>Identité</h2>
@@ -141,9 +165,9 @@ a.back{font:inherit;padding:8px 14px;border-radius:8px;border:1px solid var(--li
   </section>
 
   <section>
-    <h2>Curseurs de style</h2>
-    <p class="hint">Ce que j'aime faire. Placez-vous entre les deux pôles ; 3 = au milieu.</p>
-    <div id="cursors"></div>
+    <h2>Ma façon d'animer</h2>
+    <p class="hint">Ce qui me ressemble, quel que soit le jeu. Placez-vous entre les deux pôles ; 3 = au milieu. Le style, le ton et la dangerosité dépendent du jeu : on les règle plus bas, dans « Mes parties ».</p>
+    <div id="cursorsFixed"></div>
   </section>
 
   <section>
@@ -184,8 +208,8 @@ a.back{font:inherit;padding:8px 14px;border-radius:8px;border:1px solid var(--li
   </section>
 
   <section id="universes">
-    <h2>Mes univers</h2>
-    <p class="hint">Pour chaque genre, ambiance ou thème, je donne un niveau d'envie de animer, de 1 (peu d'envie) à 5 (fan), ou ✗ si je préfère l'éviter. Je peux noter directement la liste, ou répondre au questionnaire, qui calcule des niveaux de départ à corriger ensuite.</p>
+    <h2>Mes univers : mes goûts d'animation</h2>
+    <p class="hint">Mes goûts de fond ; l'univers de chaque partie vient du jeu choisi plus bas. Pour chaque genre, ambiance ou thème, je donne un niveau d'envie d'animer, de 1 (peu d'envie) à 5 (fan), ou ✗ si je préfère l'éviter. Je peux noter directement la liste, ou répondre au questionnaire, qui calcule des niveaux de départ à corriger ensuite.</p>
     <details class="guide">
       <summary>Je ne sais pas par où commencer : m'aider à choisir</summary>
       <p class="hint" style="margin-top:8px">Cochez ce qui vous parle (plusieurs réponses possibles par question, aucune n'est obligatoire). Plus une catégorie revient dans vos réponses, plus son niveau est élevé.</p>
@@ -203,20 +227,30 @@ a.back{font:inherit;padding:8px 14px;border-radius:8px;border:1px solid var(--li
     <div class="q"><label class="field">L'univers que j'aimerais animer un jour<input type="text" id="dream"></label></div>
   </section>
 
+  <h2 class="part">Partie 2 · Mes parties</h2>
+
+  <section id="partiesSection">
+    <h2>Les jeux que je propose</h2>
+    <p class="hint">Une carte par jeu. Le style et l'univers viennent du catalogue ; je dis à quel point je suis à l'aise avec le jeu et j'ajuste le ton, la dangerosité et la préparation pour ma table. Pour un système générique, j'indique aussi le monde.</p>
+    <datalist id="gameList"></datalist>
+    <div id="parties"></div>
+    <div class="actions"><button type="button" class="primary" id="addParty">Ajouter une partie</button></div>
+  </section>
+
   <section>
-    <h2>Mon profil</h2>
+    <h2>Ma position</h2>
     <div class="profile">
-      <svg class="map" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="Carte du profil : axe narratif/mécanique et je décide/co-création">
+      <svg class="map" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="Carte du profil : axe improvisateur/planificateur et je décide/co-création">
         <rect class="frame" x="10" y="10" width="180" height="180" rx="6"/>
         <line class="axis" x1="100" y1="10" x2="100" y2="190"/>
         <line class="axis" x1="10" y1="100" x2="190" y2="100"/>
         <text x="100" y="8" text-anchor="middle">Co-création</text>
         <text x="100" y="199" text-anchor="middle">Je décide</text>
-        <text x="14" y="97">Narratif</text>
-        <text x="186" y="97" text-anchor="end">Mécanique</text>
+        <text x="14" y="97">Improvisateur</text>
+        <text x="186" y="97" text-anchor="end">Planificateur</text>
         <circle id="dot" cx="100" cy="100" r="7" visibility="hidden"/>
       </svg>
-      <div id="summary">Remplissez les curseurs « Cadre de jeu » et « Partage du contrôle » pour voir votre position sur la carte.</div>
+      <div id="summary">Remplissez les curseurs « Préparation » et « Partage du contrôle » pour voir votre position sur la carte.</div>
     </div>
   </section>
 
@@ -307,7 +341,9 @@ $("stats").innerHTML = rows(STATS, "stat_", 1, 5);
 $("skills").innerHTML = rows(SKILLS, "skill_", 0, 3) +
   `<div class="row"><div class="lab"><input type="text" id="skillCustomName" placeholder="Autre compétence…"></div>${scale("skill_custom", 0, 3)}</div>`;
 $("gauges").innerHTML = rows(GAUGES, "gauge_", 1, 5);
-$("cursors").innerHTML = CURSORS.map(([k,t,d,a,b]) =>
+/* curseurs de fond : ceux qui dépendent du jeu (cadre, règles, dangerosité, ton) sont dans « Mes parties » */
+const FIXED_CURSORS = ["preparation","structure","controle","posture"];
+$("cursorsFixed").innerHTML = CURSORS.filter(c => FIXED_CURSORS.includes(c[0])).map(([k,t,d,a,b]) =>
   `<div class="cursor"><div class="ctitle">${t}</div><div class="cdesc">${d}</div>
    <div class="cbar"><div class="pole l">${a}</div>${scale("cur_" + k, 1, 5)}<div class="pole r">${b}</div></div></div>`).join("");
 $("advantages").innerHTML = chips(ADV, "adv");
@@ -556,7 +592,7 @@ function refresh(){
   $("advCount").textContent = `(${count("adv", ADV.length)} cochés)`;
   $("disCount").textContent = `(${count("dis", DIS.length)} cochés)`;
 
-  const x = val("cur_cadre"), y = val("cur_controle");
+  const x = val("cur_preparation"), y = val("cur_controle");
   const dot = $("dot");
   const parts = [];
   if (x !== null && y !== null){
@@ -566,18 +602,123 @@ function refresh(){
   } else {
     dot.setAttribute("visibility", "hidden");
   }
-  if (x !== null) parts.push(x < 3 ? "plutôt <b>narratif</b>" : x > 3 ? "plutôt <b>mécanique</b>" : "<b>équilibré</b> entre narration et mécanique");
+  if (x !== null) parts.push(x < 3 ? "plutôt <b>improvisateur</b>" : x > 3 ? "plutôt <b>planificateur</b>" : "<b>équilibré</b> entre improvisation et préparation");
   if (y !== null) parts.push(y < 3 ? "<b>décide</b> surtout du monde" : y > 3 ? "ouvert à la <b>co-création</b> avec les joueurs" : "<b>partage</b> le contrôle selon les scènes");
-  let html = parts.length ? "Profil : " + parts.join(", ") + "." : "Remplissez les curseurs « Cadre de jeu » et « Partage du contrôle » pour voir votre position sur la carte.";
+  let html = parts.length ? "Profil : " + parts.join(", ") + "." : "Remplissez les curseurs « Préparation » et « Partage du contrôle » pour voir votre position sur la carte.";
   const c1 = $("class1").value, c2 = $("class2").value;
   if (c1) html += `<br>Classe : <b>${c1}</b>` + (c2 ? ` / ${c2}` : "") + ".";
+  if (parties.length) html += `<br>Parties proposées : <b>${parties.length}</b>.`;
   $("summary").innerHTML = html;
   refreshUniverses();
 }
 
+/* ---- mes parties : un sous-profil par jeu proposé ---- */
+const PARTY_KEY = "fiche-mj-jdr-parties-v1";
+const MAX_PARTIES = 8;
+const MASTERY = [["", "—"], ["decouvre", "Je découvre ce jeu"], ["aise", "Je m'y sens à l'aise"], ["maitrise", "Je le maîtrise à fond"]];
+const FORMATS = ["", "Campagne", "One-shot", "Campagne ou one-shot"];
+const PARTY_CURSORS = [
+  ["ton", "Ton de ma table", "Sérieux et immersif, ou léger et humoristique", "Sérieux", "Léger"],
+  ["danger", "Dangerosité", "Les personnages sont protégés et héroïques, ou ils peuvent mourir", "Héroïque", "Impitoyable"],
+  ["prep", "Préparation pour cette partie", "J'improvise, ou je prépare en détail", "Improvisé", "Préparé"]
+];
+let parties = [];
+let nextPartyId = 1;
+/* le catalogue vient de jeux-data.js ; sans lui, on peut quand même saisir un jeu à la main */
+const CATALOGUE = typeof JEUX !== "undefined" ? JEUX : [];
+const CAT_LABELS = typeof JEUX_LABELS !== "undefined" ? JEUX_LABELS : {};
+const normText = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+const escHtml = s => String(s).replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+
+function loadParties(){
+  try {
+    const saved = JSON.parse(localStorage.getItem(PARTY_KEY) || "[]");
+    if (Array.isArray(saved)){
+      parties = saved;
+      nextPartyId = parties.reduce((m, p) => Math.max(m, p.id), 0) + 1;
+    }
+  } catch (e) {}
+}
+function saveParties(){
+  try { localStorage.setItem(PARTY_KEY, JSON.stringify(parties)); } catch (e) {}
+}
+function findGame(name){
+  const target = normText((name || "").trim());
+  return target ? CATALOGUE.find(g => normText(g.n) === target) || null : null;
+}
+function partyInfoHtml(p){
+  if (!(p.game || "").trim()) return '<span class="muted">Choisissez un jeu du catalogue, ou écrivez le nom d\'un autre jeu.</span>';
+  const game = findGame(p.game);
+  if (game){
+    const bar = '<span class="pbar">' + [1, 2, 3, 4, 5].map(n => `<i class="${n <= Math.round(game.s) ? "on" : ""}"></i>`).join("") + "</span>";
+    const chips = game.c.map(([id, level]) => `<span class="pchip">${escHtml(CAT_LABELS[id].label)} ${level}</span>`).join("");
+    return `<div class="pinfo"><b>Style du jeu</b> (du narratif au mécanique) ${bar}${game.s.toFixed(1)}</div><div class="pchips">${chips}</div>`;
+  }
+  const options = '<option value="">?</option>' + [1, 2, 3, 4, 5].map(n => `<option value="${n}"${String(p.manualStyle) === String(n) ? " selected" : ""}>${n}</option>`).join("");
+  return `<div class="pinfo"><b>Jeu absent du catalogue.</b> Style (1 narratif, 5 mécanique) <select data-id="${p.id}" data-field="manualStyle">${options}</select></div>`;
+}
+function partyScale(p, key){
+  let h = '<div class="scale" role="radiogroup">';
+  for (let v = 1; v <= 5; v++){
+    const id = `pt${p.id}_${key}_${v}`;
+    h += `<input type="radio" name="pt${p.id}_${key}" id="${id}" value="${v}" data-id="${p.id}" data-field="${key}"${String(p[key]) === String(v) ? " checked" : ""}><label for="${id}">${v}</label>`;
+  }
+  return h + "</div>";
+}
+function partyCardHtml(p, index){
+  const mastery = MASTERY.map(([v, t]) => `<option value="${v}"${p.mastery === v ? " selected" : ""}>${t}</option>`).join("");
+  const formats = FORMATS.map(f => `<option value="${f}"${p.format === f ? " selected" : ""}>${f || "—"}</option>`).join("");
+  const cursors = PARTY_CURSORS.map(([k, t, d, a, b]) =>
+    `<div class="cursor"><div class="ctitle">${t}</div><div class="cdesc">${d}</div><div class="cbar"><div class="pole l">${a}</div>${partyScale(p, k)}<div class="pole r">${b}</div></div></div>`).join("");
+  return `<div class="party" data-card="${p.id}">
+    <div class="head"><b>Partie ${index + 1}</b>
+      <input type="text" list="gameList" data-id="${p.id}" data-field="game" value="${escHtml(p.game || "")}" placeholder="Rechercher un jeu du catalogue…" aria-label="Jeu proposé">
+      <button type="button" data-remove="${p.id}" aria-label="Retirer cette partie">Retirer</button></div>
+    <div id="pinfo_${p.id}">${partyInfoHtml(p)}</div>
+    <div class="grid2">
+      <label class="field">Mon aisance avec ce jeu<select data-id="${p.id}" data-field="mastery">${mastery}</select></label>
+      <label class="field">Format<select data-id="${p.id}" data-field="format">${formats}</select></label>
+      <label class="field">Monde ou cadre (utile pour un système générique)<input type="text" data-id="${p.id}" data-field="world" value="${escHtml(p.world || "")}" placeholder="Ex. Ravenloft, Disque-Monde…"></label>
+      <label class="field">Remarque<input type="text" data-id="${p.id}" data-field="notes" value="${escHtml(p.notes || "")}"></label>
+    </div>
+    <h3>Ce que j'ajuste pour ma table</h3>${cursors}
+  </div>`;
+}
+function renderParties(){
+  $("parties").innerHTML = parties.length
+    ? parties.map(partyCardHtml).join("")
+    : '<p class="hint">Aucune partie pour l\'instant. Ajoutez le premier jeu que vous aimeriez faire jouer.</p>';
+  $("addParty").disabled = parties.length >= MAX_PARTIES;
+}
+$("gameList").innerHTML = CATALOGUE.map(g => `<option value="${escHtml(g.n)}"></option>`).join("");
+$("addParty").addEventListener("click", () => {
+  if (parties.length >= MAX_PARTIES) return;
+  parties.push({id: nextPartyId++, game: "", mastery: "", format: "", world: "", notes: "", manualStyle: "", ton: "", danger: "", prep: ""});
+  saveParties(); renderParties(); refresh();
+});
+function onPartyEdit(event){
+  const target = event.target;
+  const id = Number(target.dataset.id);
+  const field = target.dataset.field;
+  const party = parties.find(p => p.id === id);
+  if (!party || !field) return;
+  party[field] = target.value;
+  if (field === "game" && event.type === "change") $("pinfo_" + id).innerHTML = partyInfoHtml(party);
+  saveParties();
+}
+$("parties").addEventListener("input", onPartyEdit);
+$("parties").addEventListener("change", onPartyEdit);
+$("parties").addEventListener("click", event => {
+  const button = event.target.closest("[data-remove]");
+  if (!button) return;
+  parties = parties.filter(p => p.id !== Number(button.dataset.remove));
+  saveParties(); renderParties(); refresh();
+});
+
 /* ---- sauvegarde locale (facultative) ---- */
 const KEY = "fiche-mj-jdr-v1";
-function fields(){ return [...document.querySelectorAll("input, textarea, select")]; }
+/* les champs des parties ont leur propre sauvegarde */
+function fields(){ return [...document.querySelectorAll("input, textarea, select")].filter(el => !el.closest("#parties")); }
 function keyOf(el){ return el.type === "radio" ? el.name : el.id; }
 function save(){
   const data = {};
@@ -608,10 +749,14 @@ $("reset").addEventListener("click", () => {
     if (el.type === "radio" || el.type === "checkbox") el.checked = false; else el.value = "";
   });
   try { localStorage.removeItem(KEY); } catch (e) {}
+  parties = [];
+  saveParties(); renderParties();
   refresh();
 });
 
 load();
+loadParties();
+renderParties();
 refresh();
 </script>
 </body>
